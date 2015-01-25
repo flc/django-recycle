@@ -1,5 +1,5 @@
 from django.contrib import admin
-from django.db.models import Model
+from django.db.models.base import ModelBase
 
 
 def auto_register_admin(models, admin_class=None):
@@ -7,20 +7,17 @@ def auto_register_admin(models, admin_class=None):
 
     :param models: models module
     """
-    if admin_class is None:
-        admin_class = admin.ModelAdmin
-
     for attr_name in dir(models):
         attr = getattr(models, attr_name)
         try:
-            if issubclass(attr, Model):
+            if isinstance(attr, ModelBase):
                 model = attr
                 if model._meta.abstract:
                     continue
                 if not model._meta.managed:
                     continue
                 try:
-                    admin.site.register(model, admin_class)
+                    admin.site.register(model, admin_class=admin_class)
                 except admin.sites.AlreadyRegistered:
                     continue
         except TypeError:
