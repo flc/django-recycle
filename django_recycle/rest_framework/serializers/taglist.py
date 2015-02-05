@@ -1,8 +1,10 @@
 from rest_framework import serializers
 from rest_framework.exceptions import ParseError
 
+from ..compat import Field
 
-class TagListSerializer(serializers.WritableField):
+
+class TagListSerializer(Field):
 
     def from_native(self, data):
         if type(data) is not list:
