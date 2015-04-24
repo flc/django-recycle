@@ -30,6 +30,7 @@ class MoneyFieldMixin(object):
 
         declared_fields = self.__class__._declared_fields
         model = getattr(self.Meta, 'model')
+        read_only_fields = getattr(self.Meta, 'read_only_fields', None)
 
         for name, field in self.fields.items():
             if name in declared_fields:
@@ -48,5 +49,6 @@ class MoneyFieldMixin(object):
                     )
             # djmoney sets the currency field to editable=False and thus
             # rest framework considers it read_only
-            if isinstance(model_field, djmoney_fields.CurrencyField):
+            if (isinstance(model_field, djmoney_fields.CurrencyField) and
+                read_only_fields and name not in read_only_fields):
                 field.read_only = False
