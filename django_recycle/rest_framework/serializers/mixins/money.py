@@ -5,22 +5,14 @@ from rest_framework import serializers
 from djmoney.models import fields as djmoney_fields
 
 
-class MoneyField(serializers.DecimalField):
-    type_name = 'MoneyField'
-
-    def __init__(self, max_digits=10, decimal_places=2, *args, **kwargs):
-        return super(MoneyField, self).__init__(
-            max_digits, decimal_places, *args, **kwargs
-            )
-
-    def to_representation(self, value):
-        if not value:
-            return None
-        # return {
-        #     'value': value.amount,
-        #     'currency': str(value.currency)
-        #     }
-        return value.amount
+def _to_representation(self, value):
+    if not value:
+        return None
+    # return {
+    #     'value': value.amount,
+    #     'currency': str(value.currency)
+    #     }
+    return value.amount
 
 
 class MoneyFieldMixin(object):
@@ -43,10 +35,10 @@ class MoneyFieldMixin(object):
             except FieldDoesNotExist:
                 continue
             if isinstance(model_field, djmoney_fields.MoneyField):
-                self.fields[name] = MoneyField(
-                    max_digits=field.max_digits,
-                    decimal_places=field.decimal_places,
+                new_method = types.MethodType(
+                    _to_representation, field, field.__class__
                     )
+                field.to_representation = new_method
             # djmoney sets the currency field to editable=False and thus
             # rest framework considers it read_only
             if (isinstance(model_field, djmoney_fields.CurrencyField) and
