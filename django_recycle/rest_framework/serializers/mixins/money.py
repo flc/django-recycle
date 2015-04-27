@@ -3,6 +3,7 @@ import types
 from django.db.models.fields import FieldDoesNotExist
 from rest_framework import serializers
 from djmoney.models import fields as djmoney_fields
+from djmoney.forms.fields import CURRENCY_CHOICES
 
 
 def _to_representation(self, value):
@@ -42,5 +43,9 @@ class MoneyFieldMixin(object):
             # djmoney sets the currency field to editable=False and thus
             # rest framework considers it read_only
             if (isinstance(model_field, djmoney_fields.CurrencyField) and
-                read_only_fields and name not in read_only_fields):
-                field.read_only = False
+                (not read_only_fields or name not in read_only_fields)):
+                self.fields[name] = serializers.ChoiceField(
+                    choices=CURRENCY_CHOICES,
+                    read_only=False,
+                    )
+
