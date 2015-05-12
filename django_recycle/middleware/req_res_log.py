@@ -53,7 +53,7 @@ class LoggingMiddleware(object):
           request.GET,
           self._initial_http_body,
           response.status_code, response.reason_phrase,
-          response.content,
+          getattr(response, "content", "File response"),
           response.serialize_headers(),
           duration,
         )
