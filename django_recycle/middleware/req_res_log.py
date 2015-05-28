@@ -2,8 +2,16 @@ import logging
 import time
 import re
 
+from django.conf import settings
+
 
 logger = logging.getLogger(__name__)
+
+
+# empty means we log everything
+REQUEST_RESPONSE_LOG_PATHS = getattr(
+  settings, "REQUEST_RESPONSE_LOG_PATHS", ()
+  )
 
 
 def get_request_headers(request):
@@ -35,6 +43,15 @@ class LoggingMiddleware(object):
         """
         Adding request and response logging
         """
+        path = request.path
+        matched = len(REQUEST_RESPONSE_LOG_PATHS) == 0
+        for regex in REQUEST_RESPONSE_LOG_PATHS:
+          if re.search(regex, path) is not None:
+            matched = True
+
+        if not matched:
+          return response
+
         duration = time.time() - self._start_time
         request_headers = "\n".join([
             "{}: {}".format(k, v)
@@ -42,13 +59,15 @@ class LoggingMiddleware(object):
             ])
         logger.debug(
           "\n"
+          "Request Path:%s\n"
           "Request headers:\n%s\n\n"
-          "GET: %s\n\n"
-          "body: %s\n\n"
-          "response code: %s %s\n\n"
-          "response content:\n%s\n\n"
+          "Request GET: %s\n\n"
+          "Request body: %s\n\n"
+          "Response code: %s %s\n\n"
+          "Response content:\n%s\n\n"
           "Response headers:\n%s\n\n"
-          "duration: %s seconds",
+          "Duration: %s seconds",
+          request.path,
           request_headers,
           request.GET,
           self._initial_http_body,
