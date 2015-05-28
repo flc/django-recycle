@@ -109,6 +109,15 @@ def staff_or_404(view_func):
     return wraps(view_func)(_check)
 
 
+def superuser_or_404(view_func):
+    def _check(request, *args, **kwargs):
+        if request.user.is_active and request.user.is_superuser:
+            return view_func(request, *args, **kwargs)
+        else:
+            raise Http404
+    return wraps(view_func)(_check)
+
+
 def user_passes_test_or_response(test_func, response=None):
     if response is None:
         response = HttpResponseForbidden()
