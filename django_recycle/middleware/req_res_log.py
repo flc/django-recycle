@@ -30,14 +30,10 @@ class LoggingMiddleware(object):
     """
     Provides simple logging of requests and responses
     """
-    _initial_http_body = None
 
     def process_request(self, request):
-        # this is required since for some reason there is no way
-        # to access request.body in the 'process_response' method.
-        self._initial_http_body = request.body
-        self._start_time = time.time()
-        self._request_headers = get_request_headers(request)
+        request._initial_http_body = request.body
+        request._start_time = time.time()
 
     def process_response(self, request, response):
         """
@@ -52,10 +48,10 @@ class LoggingMiddleware(object):
         if not matched:
           return response
 
-        duration = time.time() - self._start_time
+        duration = time.time() - request._start_time
         request_headers = "\n".join([
             "{}: {}".format(k, v)
-            for k, v in self._request_headers.items()
+            for k, v in get_request_headers(request).items()
             ])
         logger.debug(
           "\n"
@@ -70,7 +66,7 @@ class LoggingMiddleware(object):
           request.path,
           request_headers,
           request.GET,
-          self._initial_http_body,
+          request._initial_http_body,
           response.status_code, response.reason_phrase,
           getattr(response, "content", "File response"),
           response.serialize_headers(),
