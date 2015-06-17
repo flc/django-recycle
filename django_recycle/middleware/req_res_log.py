@@ -55,7 +55,7 @@ class LoggingMiddleware(object):
             ])
         logger.debug(
           "\n"
-          "Request Path:%s\n"
+          "Request path: %s\n"
           "Request headers:\n%s\n\n"
           "Request GET: %s\n\n"
           "Request body: %s\n\n"
