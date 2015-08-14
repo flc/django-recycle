@@ -47,5 +47,6 @@ class MoneyFieldMixin(object):
                 self.fields[name] = serializers.ChoiceField(
                     choices=CURRENCY_CHOICES,
                     read_only=False,
+                    required=field.required,
                     )
 
