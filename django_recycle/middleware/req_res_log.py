@@ -32,13 +32,19 @@ class LoggingMiddleware(object):
     """
 
     def process_request(self, request):
-        request._initial_http_body = request.body
-        request._start_time = time.time()
+        request._req_res_log = {
+            'body': request.body,
+            'start_time': time.time(),
+            }
 
     def process_response(self, request, response):
         """
         Adding request and response logging
         """
+        req_res_log = getattr(request, "_req_res_log", None)
+        if req_res_log is None:
+            return response
+
         path = request.path
         matched = len(REQUEST_RESPONSE_LOG_PATHS) == 0
         for regex in REQUEST_RESPONSE_LOG_PATHS:
@@ -48,7 +54,7 @@ class LoggingMiddleware(object):
         if not matched:
           return response
 
-        duration = time.time() - request._start_time
+        duration = time.time() - req_res_log['start_time']
         request_headers = "\n".join([
             "{}: {}".format(k, v)
             for k, v in get_request_headers(request).items()
@@ -66,9 +72,9 @@ class LoggingMiddleware(object):
           request.path,
           request_headers,
           request.GET,
-          request._initial_http_body,
+          req_res_log.get('body', '').decode("utf8"),
           response.status_code, response.reason_phrase,
-          getattr(response, "content", "File response"),
+          getattr(response, "content", "File response").decode("utf8"),
           response.serialize_headers(),
           duration,
         )
