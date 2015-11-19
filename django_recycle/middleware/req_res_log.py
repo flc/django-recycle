@@ -15,8 +15,8 @@ REQUEST_RESPONSE_LOG_PATHS = getattr(
 
 
 def get_request_headers(request):
-    regex_http_          = re.compile(r'^HTTP_.+$')
-    regex_content_type   = re.compile(r'^CONTENT_TYPE$')
+    regex_http_ = re.compile(r'^HTTP_.+$')
+    regex_content_type = re.compile(r'^CONTENT_TYPE$')
     regex_content_length = re.compile(r'^CONTENT_LENGTH$')
 
     headers = {}
@@ -59,8 +59,14 @@ class LoggingMiddleware(object):
             "{}: {}".format(k, v)
             for k, v in get_request_headers(request).items()
             ])
+        mp = 'multipart' in request.META.get('CONTENT_TYPE', '')
+        if mp:
+          request_body = 'Multipart data'
+        else:
+          request_body = req_res_log.get('body', '')
         logger.debug(
           "\n"
+          "Request method: %s\n"
           "Request path: %s\n"
           "Request headers:\n%s\n\n"
           "Request GET: %s\n\n"
@@ -69,10 +75,11 @@ class LoggingMiddleware(object):
           "Response content:\n%s\n\n"
           "Response headers:\n%s\n\n"
           "Duration: %s seconds",
+          request.method,
           request.path,
           request_headers,
           request.GET,
-          req_res_log.get('body', '').decode("utf8"),
+          request_body,
           response.status_code, response.reason_phrase,
           getattr(response, "content", "File response").decode("utf8"),
           response.serialize_headers(),
