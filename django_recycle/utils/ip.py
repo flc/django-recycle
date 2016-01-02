@@ -1,5 +1,4 @@
 # borrowed mostly from https://github.com/Gidsy/django-geoip-utils/blob/master/geoip_utils/utils.py
-from django.utils.importlib import import_module
 from django.core.exceptions import ImproperlyConfigured
 
 
