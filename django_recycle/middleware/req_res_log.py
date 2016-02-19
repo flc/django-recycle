@@ -65,8 +65,9 @@ class LoggingMiddleware(object):
         else:
             request_body = req_res_log.get('body', '')
 
+        respone_content = ""
         try:
-            respone_content = unicode(
+            response_content = unicode(
                 getattr(response, "content", "File response")
                 )
         except UnicodeDecodeError:
