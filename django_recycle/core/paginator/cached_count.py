@@ -42,7 +42,7 @@ class CachedCountPaginator(Paginator):
 
                     if self._count == -1:
                         self._count = self.object_list.count()
-                else:
+
                     cache.set(key, self._count, CACHED_COUNT_PAGINATOR_TIMEOUT)
             except (AttributeError, TypeError) as e:
                 # AttributeError if object_list has no count() method.
