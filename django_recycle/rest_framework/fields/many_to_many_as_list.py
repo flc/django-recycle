@@ -1,7 +1,9 @@
 from rest_framework import serializers
 
+from ..compat import Field
 
-class ManyToManyAsListField(serializers.WritableField):
+
+class ManyToManyAsListField(Field):
     model = None
     field_name = "name"
 
