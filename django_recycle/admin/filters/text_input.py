@@ -1,5 +1,6 @@
 from django.contrib.admin import ListFilter
 from django.utils.translation import ugettext_lazy as _
+from django.contrib import messages
 
 
 class SingleTextInputFilter(ListFilter):
@@ -39,7 +40,6 @@ class SingleTextInputFilter(ListFilter):
         """
         return [self.parameter_name]
 
-
     def choices(self, cl):
         all_choice = {
             'selected': self.value() is None,
@@ -65,7 +65,18 @@ def foreign_key_single_input_factory(field):
         def queryset(self, request, queryset):
             value = self.value()
             if value:
-                kwargs = {_field_name: value}
-                return queryset.filter(**kwargs)
+                kwargs = {self.parameter_name: value}
+                try:
+                    return queryset.filter(**kwargs)
+                except ValueError:
+                    msg = _(
+                        "Please provide a valid primary key (typically ID) "
+                        "of the %(title)s."
+                        ) % {'title': self.title}
+                    # XXX how to access model_admin?
+                    # self.message_user(request, msg, level=)
+                    messages.add_message(
+                        request, messages.ERROR, msg
+                        )
 
     return ForeignKeyFilter
