@@ -1,6 +1,7 @@
 from django.contrib.admin import ListFilter
 from django.utils.translation import ugettext_lazy as _
 from django.contrib import messages
+from django.core.exceptions import ImproperlyConfigured
 
 
 class SingleTextInputFilter(ListFilter):
@@ -54,9 +55,23 @@ class SingleTextInputFilter(ListFilter):
         }, )
 
 
-def foreign_key_single_input_factory(field):
-    _field_name = field.field.name
-    _title = field.field.verbose_name
+def foreign_key_single_input_factory(field=None, title=None, parameter_name=None):
+    if field is None:
+        if not title:
+            raise ImproperlyConfigured(
+                "Since field is None you have to specify both title and parameter_name."
+                )
+        if not parameter_name:
+            raise ImproperlyConfigured(
+                "Since field is None you have to specify both title and parameter_name."
+                )
+
+    if hasattr(field, "field"):
+        _field_name = field.field.name
+        _title = field.field.verbose_name
+    else:
+        _field_name = parameter_name
+        _title = title
 
     class ForeignKeyFilter(SingleTextInputFilter):
         title = _title
