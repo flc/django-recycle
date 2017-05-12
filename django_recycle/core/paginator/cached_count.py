@@ -22,7 +22,7 @@ class CachedCountPaginator(Paginator):
         """
         Returns the total number of objects, across all pages.
         """
-        if self._count is None:
+        if getattr(self, '_count', None) is None:
             try:
                 key = "cachedcountpaginator:{0}".format(
                     hash(self.object_list.query.__str__())
