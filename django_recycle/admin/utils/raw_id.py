@@ -9,7 +9,9 @@ class RawIdModelAdminMixin(object):
         Get a form Field for a ForeignKey.
         """
         db = kwargs.get('using')
-        kwargs['widget'] = widgets.ForeignKeyRawIdWidget(db_field.rel,
+        # django 2.0 compatibility
+        rel = getattr(db_field, 'rel', db_field.remote_field)
+        kwargs['widget'] = widgets.ForeignKeyRawIdWidget(rel,
                                                          self.admin_site,
                                                          using=db)
         return db_field.formfield(**kwargs)
@@ -19,7 +21,9 @@ class RawIdModelAdminMixin(object):
             return None
 
         db = kwargs.get('using')
-        kwargs['widget'] = widgets.ManyToManyRawIdWidget(db_field.rel,
+        # django 2.0 compatibility
+        rel = getattr(db_field, 'rel', db_field.remote_field)
+        kwargs['widget'] = widgets.ManyToManyRawIdWidget(rel,
                                                          self.admin_site,
                                                          using=db)
         return db_field.formfield(**kwargs)
