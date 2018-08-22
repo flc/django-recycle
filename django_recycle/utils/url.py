@@ -1,4 +1,7 @@
-import urlparse
+try:
+    import urlparse
+except ImportError:  # python3
+    import urllib.parse as urlparse
 
 from django.conf import settings
 from django.contrib.sites.models import Site
