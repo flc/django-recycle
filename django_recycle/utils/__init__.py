@@ -1,4 +1,7 @@
-from django.utils.encoding import force_unicode
+try:
+    from django.utils.encoding import force_unicode as force_text
+except ImportError:
+    from django.utils.encoding import force_text  # Python 3
 
 
 def get_choice_display(choices, choice):
@@ -11,7 +14,7 @@ def get_choice_display(choices, choice):
     >> get_choice_display(CHOICES, A)
     u'A'
     """
-    return force_unicode(dict(choices).get(choice), strings_only=True)
+    return force_text(dict(choices).get(choice), strings_only=True)
 
 
 def copy_qdict(qdict, exclude=None):
