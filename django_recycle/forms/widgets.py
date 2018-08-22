@@ -4,7 +4,11 @@ from django import forms
 from django.utils.safestring import mark_safe
 from django.forms.util import flatatt
 from django.utils.html import conditional_escape
-from django.utils.encoding import force_unicode
+
+try:
+    from django.utils.encoding import force_unicode as force_text
+except ImportError:
+    from django.utils.encoding import force_text  # Python 3
 
 
 class ClassAttrAwareWidgetMixin(object):
@@ -45,4 +49,4 @@ class NewlinePreservingTextarea(forms.widgets.Textarea):
             value = ''
         final_attrs = self.build_attrs(attrs, name=name)
         return mark_safe(u'<textarea%s>\r\n%s</textarea>' % (flatatt(final_attrs),
-                conditional_escape(force_unicode(value))))
+                conditional_escape(force_text(value))))
