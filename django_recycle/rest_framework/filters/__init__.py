@@ -23,6 +23,8 @@ class FieldsFilterBackend(filters.BaseFilterBackend):
                 return queryset.filter(**filters)
             except ValidationError as e:
                 raise drf_exceptions.ValidationError(detail=str(e))
+            except Exception as e:
+                raise drf_exceptions.ValidationError(detail=str(e))
         return queryset
 
 
