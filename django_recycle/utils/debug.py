@@ -26,7 +26,12 @@ def log_queries(view_func):
 
         old_queries = connection.queries
 
-        connection.queries = []
+        try:
+            connection.queries = []
+        except AttributeError:  # django compat
+            from django.db import reset_queries
+            reset_queries()
+
         response = view_func(request, *args, **kwargs)
         log('Queries: %s', pprint.pformat(connection.queries))
         log('Queries len: %s', len(connection.queries))
