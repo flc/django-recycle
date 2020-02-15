@@ -1,5 +1,6 @@
 from django.core.exceptions import ValidationError
 from django.db import models
+from django.core.exceptions import FieldDoesNotExist
 
 from rest_framework import filters
 from rest_framework import exceptions as drf_exceptions
@@ -19,17 +20,21 @@ class FieldsFilterBackend(filters.BaseFilterBackend):
 
                 # special care for boolean fields
                 model = queryset.model
-                model_field = model._meta.get_field(name)
-                if isinstance(value, str) and isinstance(
-                    model_field,
-                    (models.BooleanField, models.NullBooleanField)
-                ):
-                    if value.lower() in ("false", "0"):
-                        value = False
-                    elif value.lower() in ("true", "1"):
-                        value = True
-                    elif value.lower() in ("null",):
-                        value = None
+                try:
+                    model_field = model._meta.get_field(name)
+                except FieldDoesNotExist:
+                    pass
+                else:
+                    if isinstance(value, str) and isinstance(
+                        model_field,
+                        (models.BooleanField, models.NullBooleanField)
+                    ):
+                        if value.lower() in ("false", "0"):
+                            value = False
+                        elif value.lower() in ("true", "1"):
+                            value = True
+                        elif value.lower() in ("null",):
+                            value = None
 
                 filters[name] = value
         if filters:
