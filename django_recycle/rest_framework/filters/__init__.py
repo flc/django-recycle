@@ -19,6 +19,7 @@ class FieldsFilterBackend(filters.BaseFilterBackend):
                 value = params[name]
 
                 # special care for boolean fields
+                # and fields that can accept null as a filter value
                 model = queryset.model
                 try:
                     model_field = model._meta.get_field(name)
@@ -34,6 +35,12 @@ class FieldsFilterBackend(filters.BaseFilterBackend):
                         elif value.lower() in ("true", "1"):
                             value = True
                         elif value.lower() in ("null",):
+                            value = None
+
+                    if isinstance(value, str) and model_field.null and not isinstance(
+                        model_field, (models.CharField, models.TextField)
+                    ):
+                        if value.lower() in ("null",):
                             value = None
 
                 filters[name] = value
@@ -62,7 +69,10 @@ class FieldsInBackend(filters.BaseFilterBackend):
             if not param_value:
                 continue
             try:
-                values = set([v.strip() for v in param_value.split(self.delimiter)])
+                values = set([
+                    v.strip()
+                    for v in param_value.split(self.delimiter)
+                    ])
             except Exception:
                 continue
             filters[field_param] = values
