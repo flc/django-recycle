@@ -24,7 +24,12 @@ class FieldsFilterBackend(filters.BaseFilterBackend):
                 try:
                     model_field = model._meta.get_field(name)
                 except FieldDoesNotExist:
-                    pass
+                    # special care for isnull lookups
+                    if name.endswith('__isnull'):
+                        if value.lower() in ("false", "0"):
+                            value = False
+                        elif value.lower() in ("true", "1"):
+                            value = True
                 else:
                     if isinstance(value, str) and isinstance(
                         model_field,
@@ -44,6 +49,7 @@ class FieldsFilterBackend(filters.BaseFilterBackend):
                             value = None
 
                 filters[name] = value
+
         if filters:
             try:
                 return queryset.filter(**filters)
