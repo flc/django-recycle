@@ -5,6 +5,8 @@ from django.core.exceptions import FieldDoesNotExist
 from rest_framework import filters
 from rest_framework import exceptions as drf_exceptions
 
+from ...db.utils import find_model_field_by_lookup
+
 
 class FieldsFilterBackend(filters.BaseFilterBackend):
     fields = ()  # subclass and specify
@@ -22,7 +24,7 @@ class FieldsFilterBackend(filters.BaseFilterBackend):
                 # and fields that can accept null as a filter value
                 model = queryset.model
                 try:
-                    model_field = model._meta.get_field(name)
+                    model_field = find_model_field_by_lookup(model, name)
                 except FieldDoesNotExist:
                     # special care for isnull lookups
                     if name.endswith('__isnull'):
