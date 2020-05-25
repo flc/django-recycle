@@ -1,4 +1,10 @@
-import StringIO
+try:
+    import StringIO
+    IO_class = StringIO.StringIO
+except ImportError:
+    import io
+    IO_class = io.BytesIO
+
 
 from django.http import HttpResponse
 from django.template.loader import get_template, render_to_string
@@ -33,7 +39,7 @@ def generate_pdf(template_name,
                  url_fetcher=static_file_url_fetcher,
                  ):
     if not file_object:
-        file_object = StringIO.StringIO()
+        file_object = IO_class()
     if not context:
         context = {}
     html = render_to_string(template_name, context)

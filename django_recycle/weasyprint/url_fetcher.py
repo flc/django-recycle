@@ -30,8 +30,12 @@ def static_file_url_fetcher(url):
         file_path = os.path.join(settings.STATIC_ROOT, path)
 
     if file_path is not None:
-        with open(file_path) as f:
-            contents = f.read()
+        try:
+            with open(file_path) as f:
+                contents = f.read()
+        except UnicodeDecodeError:
+            with open(file_path, 'rb') as f:
+                contents = f.read()
         return dict(string=contents)
 
     return weasyprint.default_url_fetcher(url)
