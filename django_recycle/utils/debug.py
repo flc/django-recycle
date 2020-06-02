@@ -1,15 +1,17 @@
 import logging
 import pprint
 import re
+import six
 
 try:
     from functools import wraps
 except ImportError:
     from django.utils.functional import wraps  # Python 2.4 fallback.
 
-from django.utils.decorators import available_attrs
 from django.conf import settings
 from django.db import connection
+
+from .compat import available_attrs
 
 
 logger = logging.getLogger(__name__)

@@ -3,9 +3,11 @@ try:
 except ImportError:
     from django.utils.functional import wraps  # Python 2.4 fallback.
 
-from django.utils.decorators import method_decorator, available_attrs
+from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt, csrf_protect
 from django.http import HttpResponseBadRequest, Http404, HttpResponseForbidden
+
+from ..utils.compat import available_attrs
 
 
 def view_decorator(orig_dec):
