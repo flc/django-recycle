@@ -42,7 +42,6 @@ class MoneyFieldMixin(object):
                         _to_representation, field, field.__class__
                         )
                 else:
-                    print('ITT')
                     new_method = types.MethodType(
                         _to_representation, field
                         )
