@@ -1,4 +1,6 @@
 import types
+import six
+
 from django.db.models.fields import FieldDoesNotExist
 
 from rest_framework.fields import ChoiceField
@@ -27,7 +29,12 @@ class CountryFieldMixin(object):
             except FieldDoesNotExist:
                 continue
             if isinstance(model_field, CountryModelField):
-                new_method = types.MethodType(
-                    _to_representation, field, ChoiceField
-                    )
+                if six.PY2:
+                    new_method = types.MethodType(
+                        _to_representation, field, ChoiceField
+                        )
+                else:
+                    new_method = types.MethodType(
+                        _to_representation, field
+                        )
                 field.to_representation = new_method

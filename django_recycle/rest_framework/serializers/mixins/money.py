@@ -1,4 +1,5 @@
 import types
+import six
 
 from django.db.models.fields import FieldDoesNotExist
 from rest_framework import serializers
@@ -36,9 +37,15 @@ class MoneyFieldMixin(object):
             except FieldDoesNotExist:
                 continue
             if isinstance(model_field, djmoney_fields.MoneyField):
-                new_method = types.MethodType(
-                    _to_representation, field, field.__class__
-                    )
+                if six.PY2:
+                    new_method = types.MethodType(
+                        _to_representation, field, field.__class__
+                        )
+                else:
+                    print('ITT')
+                    new_method = types.MethodType(
+                        _to_representation, field
+                        )
                 field.to_representation = new_method
             # djmoney sets the currency field to editable=False and thus
             # rest framework considers it read_only
@@ -49,4 +56,3 @@ class MoneyFieldMixin(object):
                     read_only=False,
                     required=field.required,
                     )
-
