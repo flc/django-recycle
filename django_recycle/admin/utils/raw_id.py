@@ -3,11 +3,15 @@ from django.contrib.admin import widgets
 
 
 class RawIdModelAdminMixin(object):
+    raw_id_exclude = []
 
     def formfield_for_foreignkey(self, db_field, request=None, **kwargs):
         """
         Get a form Field for a ForeignKey.
         """
+        if db_field.name in self.raw_id_exclude:
+            return super().formfield_for_foreignkey(db_field, request=None, **kwargs)
+
         db = kwargs.get('using')
         # django 2.0 compatibility
         rel = getattr(db_field, 'rel', db_field.remote_field)
@@ -17,6 +21,9 @@ class RawIdModelAdminMixin(object):
         return db_field.formfield(**kwargs)
 
     def formfield_for_manytomany(self, db_field, request=None, **kwargs):
+        if db_field.name in self.raw_id_exclude:
+            return super().formfield_for_manytomany(db_field, request=None, **kwargs)
+
         # django 2.0 compatibility
         rel = getattr(db_field, 'rel', db_field.remote_field)
 
