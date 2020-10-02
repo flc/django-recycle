@@ -1,7 +1,7 @@
 import types
 import six
 
-from django.db.models.fields import FieldDoesNotExist
+from django.core.exceptions import FieldDoesNotExist
 from rest_framework import serializers
 from djmoney.models import fields as djmoney_fields
 from djmoney.forms.fields import CURRENCY_CHOICES

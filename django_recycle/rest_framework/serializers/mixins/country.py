@@ -1,8 +1,7 @@
 import types
 import six
 
-from django.db.models.fields import FieldDoesNotExist
-
+from django.core.exceptions import FieldDoesNotExist
 from rest_framework.fields import ChoiceField
 from django_countries.fields import CountryField as CountryModelField
 

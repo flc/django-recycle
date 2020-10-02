@@ -1,6 +1,6 @@
-from django.core.exceptions import ValidationError
+from django.core.exceptions import ValidationError, FieldDoesNotExist
+from django.db.models.constants import LOOKUP_SEP
 from django.db import models
-from django.core.exceptions import FieldDoesNotExist
 
 from rest_framework import filters
 from rest_framework import exceptions as drf_exceptions
