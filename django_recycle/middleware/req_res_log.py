@@ -3,6 +3,7 @@ import time
 import re
 
 from django.conf import settings
+from django.utils.deprecation import MiddlewareMixin
 
 
 logger = logging.getLogger(__name__)
@@ -26,7 +27,7 @@ def get_request_headers(request):
     return headers
 
 
-class LoggingMiddleware(object):
+class LoggingMiddleware(MiddlewareMixin):
     """
     Provides simple logging of requests and responses
     """
