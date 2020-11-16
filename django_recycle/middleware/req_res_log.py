@@ -4,6 +4,7 @@ import re
 
 from django.conf import settings
 from django.utils.deprecation import MiddlewareMixin
+import unidecode
 
 
 logger = logging.getLogger(__name__)
@@ -78,6 +79,18 @@ class LoggingMiddleware(MiddlewareMixin):
                     )
             except UnicodeDecodeError:
                 response_content = ""
+
+        try:
+            # request_body = unicode(request_body, "utf8", errors="ignore").encode("ascii", "ignore")
+            request_body = unicode(request_body)
+        except UnicodeDecodeError:
+            try:
+                request_body = request_body.decode("utf8")
+            except UnicodeDecodeError:
+                try:
+                    request_body = unidecode.unidecode(request_body)
+                except Exception as e:
+                    request_body = 'Unidecode error'
 
         logger.debug(
           u"\n"
