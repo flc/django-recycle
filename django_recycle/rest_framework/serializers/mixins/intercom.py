@@ -20,8 +20,16 @@ class IntercomUserHashMixin(object):
             return None
 
         hmac_value = str(obj.id) if obj.id else str(obj.email)
-        user_hash = hmac.new(
-            secure_key, hmac_value,
-            digestmod=hashlib.sha256
-            ).hexdigest()
+        try:
+            user_hash = hmac.new(
+                secure_key, hmac_value,
+                digestmod=hashlib.sha256
+                ).hexdigest()
+        except TypeError:
+            # in Python3: TypeError: key: expected bytes or bytearray, but got 'str'
+            user_hash = hmac.new(
+                bytes(secure_key, 'utf-8'),
+                bytes(hmac_value, 'utf-8'),
+                digestmod=hashlib.sha256
+                ).hexdigest()
         return user_hash
