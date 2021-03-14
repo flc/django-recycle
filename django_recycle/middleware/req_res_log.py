@@ -2,6 +2,8 @@ import logging
 import time
 import re
 
+import six
+
 from django.conf import settings
 from django.utils.deprecation import MiddlewareMixin
 import unidecode
@@ -69,12 +71,12 @@ class LoggingMiddleware(MiddlewareMixin):
 
         respone_content = ""
         try:
-            response_content = unicode(
+            response_content = six.text_type(
                 getattr(response, "content", "File response")
                 )
         except UnicodeDecodeError:
             try:
-                response_content = unicode(
+                response_content = six.text_type(
                     getattr(response, "content", "File response").decode("utf8")
                     )
             except UnicodeDecodeError:
@@ -82,7 +84,7 @@ class LoggingMiddleware(MiddlewareMixin):
 
         try:
             # request_body = unicode(request_body, "utf8", errors="ignore").encode("ascii", "ignore")
-            request_body = unicode(request_body)
+            request_body = six.text_type(request_body)
         except UnicodeDecodeError:
             try:
                 request_body = request_body.decode("utf8")

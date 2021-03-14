@@ -7,7 +7,7 @@ from django_countries.fields import CountryField as CountryModelField
 
 
 def _to_representation(self, value):
-    if unicode(value) == '':
+    if six.text_type(value) == '':
         return ''
     return ChoiceField.to_representation(self, value)
 
