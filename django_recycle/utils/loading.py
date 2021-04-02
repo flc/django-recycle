@@ -45,7 +45,7 @@ class ClassMapper(object):
             module = None
             try:
                 module = import_module(module_path)
-            except ImportError, exc:
+            except ImportError as exc:
                 klass = self._get_fallback_class()
 
             if klass is None:

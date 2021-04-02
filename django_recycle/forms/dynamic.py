@@ -1,3 +1,5 @@
+import six
+
 from django.forms.forms import NON_FIELD_ERRORS, BoundField
 from django.utils.safestring import mark_safe
 
@@ -62,7 +64,7 @@ class DynamicMultiForm(object):
                 else:
                     form_errors.append(form.errors)
         errors = {
-            NON_FIELD_ERRORS: map(lambda x: unicode(x), self._errors),
+            NON_FIELD_ERRORS: map(lambda x: six.text_type(x), self._errors),
             'forms': form_errors,
         }
         return errors
