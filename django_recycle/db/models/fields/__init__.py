@@ -1,14 +1,7 @@
-import django
 from django.db import models
 
 
-if django.VERSION < (1, 8):
-    base_field_class = six.with_metaclass(models.SubfieldBase, models.CharField)
-else:
-    base_field_class = models.CharField
-
-
-class NullableCharField(base_field_class):
+class NullableCharField(models.CharField):
     description = "CharField that stores NULL but returns ''"
     # this ensures to_python will be called
     # __metaclass__ = models.SubfieldBase

@@ -1,14 +1,8 @@
-try:
-    import urllib.parse
-except ImportError:  # python3
-    import urllib.parse as urlparse
+import urllib.parse
 
 from django.conf import settings
 from django.contrib.sites.models import Site
-try:
-    from django.core.urlresolvers import reverse
-except ImportError:
-    from django.urls import reverse
+from django.urls import reverse
 from django.http import QueryDict
 
 

@@ -4,11 +4,7 @@ from django import forms
 from django.utils.safestring import mark_safe
 from django.forms.util import flatatt
 from django.utils.html import conditional_escape
-
-try:
-    from django.utils.encoding import force_unicode as force_text
-except ImportError:
-    from django.utils.encoding import force_str  # Python 3
+from django.utils.encoding import force_str
 
 
 class ClassAttrAwareWidgetMixin:

@@ -2,8 +2,6 @@ import logging
 import time
 import re
 
-import six
-
 from django.conf import settings
 from django.utils.deprecation import MiddlewareMixin
 import unidecode

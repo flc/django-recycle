@@ -1,4 +1,3 @@
-import six
 from functools import WRAPPER_ASSIGNMENTS
 
 

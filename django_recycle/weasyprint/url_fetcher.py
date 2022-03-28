@@ -1,8 +1,5 @@
 import os
-try:
-    import urllib.parse
-except ImportError:  # python3
-    import urllib.parse as urlparse
+import urllib.parse
 
 from django.conf import settings
 from django.contrib.staticfiles import finders

@@ -1,11 +1,4 @@
-try:
-    from django.utils.encoding import force_unicode as force_str
-except ImportError:
-    # Python 3 / Django 2
-    try:
-        from django.utils.encoding import force_str as force_str
-    except ImportError:
-        from django.utils.encoding import force_str
+from django.utils.encoding import force_str
 
 
 def get_choice_display(choices, choice):

@@ -1,5 +1,4 @@
 import types
-import six
 
 from django.core.exceptions import FieldDoesNotExist
 from rest_framework import serializers

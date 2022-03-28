@@ -1,15 +1,12 @@
 import logging
 import pprint
 import re
-import six
 
-try:
-    from functools import wraps
-except ImportError:
-    from django.utils.functional import wraps  # Python 2.4 fallback.
+from functools import wraps
 
 from django.conf import settings
 from django.db import connection
+from django.db import reset_queries
 
 from .compat import available_attrs
 
@@ -27,12 +24,7 @@ def log_queries(view_func):
             return view_func(request, *args, **kwargs)
 
         old_queries = connection.queries
-
-        try:
-            connection.queries = []
-        except AttributeError:  # django compat
-            from django.db import reset_queries
-            reset_queries()
+        reset_queries()
 
         response = view_func(request, *args, **kwargs)
         log('Queries: %s', pprint.pformat(connection.queries))

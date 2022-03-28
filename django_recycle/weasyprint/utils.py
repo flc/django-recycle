@@ -1,14 +1,7 @@
-try:
-    import io
-    IO_class = io.StringIO
-except ImportError:
-    import io
-    IO_class = io.BytesIO
-
+import io
 
 from django.http import HttpResponse
 from django.template.loader import get_template, render_to_string
-from django.template import RequestContext
 
 import weasyprint
 
@@ -43,7 +36,7 @@ def generate_pdf(
     url_fetcher=static_file_url_fetcher
 ):
     if not file_object:
-        file_object = IO_class()
+        file_object = io.BytesIO()
     if not context:
         context = {}
     html = render_to_string(template_name, context)

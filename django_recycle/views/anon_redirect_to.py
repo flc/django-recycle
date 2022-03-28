@@ -1,7 +1,4 @@
-try:
-    import urllib.parse
-except ImportError:  # python3
-    import urllib.parse as urlparse
+import urllib.parse
 
 from django.http import HttpResponseBadRequest, HttpResponse
 from django.utils.html import format_html
