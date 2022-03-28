@@ -8,11 +8,11 @@ class TransformQuerySet(models.query.QuerySet):
     # borrowed from https://github.com/simonw/django-queryset-transform/blob/master/queryset_transform/__init__.py
 
     def __init__(self, *args, **kwargs):
-        super(TransformQuerySet, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         self._transform_fns = []
 
     def _clone(self, klass=None, setup=False, **kw):
-        c = super(TransformQuerySet, self)._clone(klass, setup, **kw)
+        c = super()._clone(klass, setup, **kw)
         c._transform_fns = self._transform_fns[:]
         return c
 
@@ -22,7 +22,7 @@ class TransformQuerySet(models.query.QuerySet):
         return c
 
     def iterator(self):
-        result_iter = super(TransformQuerySet, self).iterator()
+        result_iter = super().iterator()
         if self._transform_fns:
             results = list(result_iter)
             for fn in self._transform_fns:

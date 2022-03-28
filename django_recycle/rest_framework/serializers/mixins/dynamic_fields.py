@@ -1,4 +1,4 @@
-class DynamicFieldsMixin(object):
+class DynamicFieldsMixin:
     """
     A serializer mixin that takes an additional `fields` argument that controls
     which fields should be displayed.
@@ -14,7 +14,7 @@ class DynamicFieldsMixin(object):
     dynamic_fields_protected = ()
 
     def __init__(self, *args, **kwargs):
-        super(DynamicFieldsMixin, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
 
         request = self.context.get('request')
         if not request:
@@ -23,7 +23,7 @@ class DynamicFieldsMixin(object):
         if not fields:
             return
 
-        keep_fields = set([f.strip() for f in fields.split(',')]).union(
+        keep_fields = {f.strip() for f in fields.split(',')}.union(
             set(self.get_dynamic_fields_protected())
             )
         for name, field in list(self.fields.items()):

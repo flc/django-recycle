@@ -6,22 +6,22 @@ from django.utils.translation import ugettext
 from core.utils.looping import grouper
 
 
-class FormFieldWithFormMixin(object):
+class FormFieldWithFormMixin:
 
     def __init__(self, form, *args, **kwargs):
         self.form = form
-        super(FormFieldWithFormMixin, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
 
 
-class PrefixedErrorsFormMixin(object):
+class PrefixedErrorsFormMixin:
 
     @property
     def errors(self):
-        errors = super(PrefixedErrorsFormMixin, self).errors
+        errors = super().errors
         # includes the prefix in the error keys
         new_errors = {}
         for key, value in list(errors.items()):
-            new_errors["{0}-{1}".format(self.prefix, key)] = value
+            new_errors[f"{self.prefix}-{key}"] = value
         return new_errors
 
 
@@ -40,7 +40,7 @@ def _unique_together_clean_field_method(self):
     return field_value
 
 
-class ValidateUniqueTogetherFormMixin(object):
+class ValidateUniqueTogetherFormMixin:
     unique_together_form_field = None
     unique_together_form_field_lookup = "iexact"
     unique_together_form_field_allow_empty = False
@@ -54,13 +54,13 @@ class ValidateUniqueTogetherFormMixin(object):
         else:
             self._instance = kwargs.pop("instance", None)
         setattr(self.__class__,
-                'clean_{}'.format(self.unique_together_form_field),
+                f'clean_{self.unique_together_form_field}',
                 _unique_together_clean_field_method)
-        super(ValidateUniqueTogetherFormMixin, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
 
     def get_unique_together_filter_kwargs(self, field_value):
         kwargs = {
-            "{0}__{1}".format(self.unique_together_form_field,
+            "{}__{}".format(self.unique_together_form_field,
                         self.unique_together_form_field_lookup): field_value,
             self.unique_together_against_field:
                                         self.unique_together_against_value,
@@ -80,7 +80,7 @@ class MinMaxFormMixin(forms.Form):
     min_max_field_class = forms.FloatField
 
     def __init__(self, *args, **kwargs):
-        super(MinMaxFormMixin, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         if self.min_max_field_names is not None:
             self.min_max_names = self.min_max_field_names[:]
         else:
@@ -121,7 +121,7 @@ class MinMaxFormMixin(forms.Form):
         return data
 
     def clean(self):
-        cleaned_data = super(MinMaxFormMixin, self).clean()
+        cleaned_data = super().clean()
 
         for min_name, max_name in grouper(2, self.min_max_names):
             min_value = cleaned_data.get(min_name, None)
@@ -144,7 +144,7 @@ class RequiredMinMaxFormMixin(MinMaxFormMixin):
     """Use when either the min or the max value is required."""
 
     def clean(self):
-        cleaned_data = super(RequiredMinMaxFormMixin, self).clean()
+        cleaned_data = super().clean()
 
         for min_name, max_name in grouper(2, self.min_max_names):
             min_value = cleaned_data.get(min_name, None)

@@ -4,7 +4,7 @@ from django.forms.forms import NON_FIELD_ERRORS, BoundField
 from django.utils.safestring import mark_safe
 
 
-class DynamicMultiForm(object):
+class DynamicMultiForm:
     # if self.validate fail and defer_form_validation is True the validation of
     # the independent forms will be skipped;
     # it's useful when you do expensive validations in the forms
@@ -34,7 +34,7 @@ class DynamicMultiForm(object):
         return mark_safe('\n'.join([form.as_table() for form in self.forms]))
 
     def save(self, commit=True):
-        return tuple([form.save(commit) for form in self.forms])
+        return tuple(form.save(commit) for form in self.forms)
 
     def validate(self):
         return True
@@ -64,7 +64,7 @@ class DynamicMultiForm(object):
                 else:
                     form_errors.append(form.errors)
         errors = {
-            NON_FIELD_ERRORS: [six.text_type(x) for x in self._errors],
+            NON_FIELD_ERRORS: [str(x) for x in self._errors],
             'forms': form_errors,
         }
         return errors

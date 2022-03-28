@@ -6,10 +6,10 @@ from django.conf import settings
 from rest_framework import serializers
 
 
-class IntercomUserHashMixin(object):
+class IntercomUserHashMixin:
 
     def __init__(self, *args, **kwargs):
-        super(IntercomUserHashMixin, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         if getattr(settings, "INTERCOM_SECURE_KEY", None):
             self.fields['intercom_user_hash'] = \
                 serializers.SerializerMethodField('_get_intercom_user_hash')

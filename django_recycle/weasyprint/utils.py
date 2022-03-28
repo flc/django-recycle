@@ -32,7 +32,7 @@ def render_to_pdf(
         url_fetcher=url_fetcher
     ).write_pdf(response)
     if filename is not None:
-        response['Content-Disposition'] = 'attachment; filename={}'.format(filename)
+        response['Content-Disposition'] = f'attachment; filename={filename}'
     return response
 
 

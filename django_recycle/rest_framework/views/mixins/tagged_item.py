@@ -1,4 +1,4 @@
-class TaggedItemViewMixin(object):
+class TaggedItemViewMixin:
     tags_field_name = "tags"
 
     def _adjust_tags_data(self, data, key="text"):
@@ -13,7 +13,7 @@ class TaggedItemViewMixin(object):
         return obj
 
     def post_save(self, obj, *args, **kwargs):
-        super(TaggedItemViewMixin, self).post_save(obj, *args, **kwargs)
+        super().post_save(obj, *args, **kwargs)
 
         tagged_obj = self.get_tagged_object(obj)
         if type(getattr(tagged_obj, self.tags_field_name)) is list:

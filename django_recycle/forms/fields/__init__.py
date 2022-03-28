@@ -10,7 +10,7 @@ class UserGroupModelChoiceField(FormFieldWithFormMixin,
                                 GroupedModelChoiceField):
 
     def __init__(self, *args, **kwargs):
-        super(UserGroupModelChoiceField, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
 
     def get_group_label(self, group):
         user = self.form.user

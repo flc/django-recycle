@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.contrib.admin import widgets
 
 
-class RawIdModelAdminMixin(object):
+class RawIdModelAdminMixin:
     raw_id_exclude = []
 
     def formfield_for_foreignkey(self, db_field, request=None, **kwargs):

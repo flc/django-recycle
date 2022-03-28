@@ -21,7 +21,7 @@ class UploadProgressCachedHandler(FileUploadHandler):
     """
 
     def __init__(self, request=None):
-        super(UploadProgressCachedHandler, self).__init__(request)
+        super().__init__(request)
 
         self.progress_id = None
         self.cache_key = None

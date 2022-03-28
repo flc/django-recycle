@@ -11,7 +11,7 @@ except ImportError:
     from django.utils.encoding import force_text  # Python 3
 
 
-class ClassAttrAwareWidgetMixin(object):
+class ClassAttrAwareWidgetMixin:
 
     def build_attrs(self, extra_attrs=None, **kwargs):
         """Reimplements forms.Widget.build_attrs"""

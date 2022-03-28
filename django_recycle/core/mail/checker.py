@@ -5,7 +5,7 @@ import logging
 logger = logging.getLogger(__name__)
 
 
-class EmailChecker(object):
+class EmailChecker:
 
     def __init__(self, paths):
         self.paths = paths
@@ -28,7 +28,7 @@ class EmailChecker(object):
             logger.exception("Failed to open %s", path)
             return set()
         else:
-            return set(line.strip().lower() for line in f)
+            return {line.strip().lower() for line in f}
 
     def __len__(self):
         return len(self.domains)

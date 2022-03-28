@@ -9,4 +9,4 @@ class RealField(FloatField):
     def db_type(self, connection):
         if 'postgresql' in connection.settings_dict['ENGINE']:
             return 'real'
-        return super(RealField, self).db_type(connection)
+        return super().db_type(connection)

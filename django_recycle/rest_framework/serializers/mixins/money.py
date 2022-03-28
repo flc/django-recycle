@@ -17,10 +17,10 @@ def _to_representation(self, value):
     return value.amount
 
 
-class MoneyFieldMixin(object):
+class MoneyFieldMixin:
 
     def __init__(self, *args, **kwargs):
-        super(MoneyFieldMixin, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
 
         declared_fields = self.__class__._declared_fields
         model = getattr(self.Meta, 'model')
@@ -37,14 +37,9 @@ class MoneyFieldMixin(object):
             except FieldDoesNotExist:
                 continue
             if isinstance(model_field, djmoney_fields.MoneyField):
-                if six.PY2:
-                    new_method = types.MethodType(
-                        _to_representation, field, field.__class__
-                        )
-                else:
-                    new_method = types.MethodType(
-                        _to_representation, field
-                        )
+                new_method = types.MethodType(
+                    _to_representation, field
+                    )
                 field.to_representation = new_method
             # djmoney sets the currency field to editable=False and thus
             # rest framework considers it read_only

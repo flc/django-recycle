@@ -1,5 +1,3 @@
-
-
 import operator
 
 from django.db import connection
@@ -32,7 +30,7 @@ def get_db_table_sizes(top_n=None, order_by=1, pretty=True):
     sizes = []
     for table in tables:
         cursor.execute(
-            "SELECT {}, {}".format(with_indexes_select, without_indexes_select),
+            f"SELECT {with_indexes_select}, {without_indexes_select}",
             [table, table]
             )
         row = cursor.fetchone()

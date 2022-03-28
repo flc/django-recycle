@@ -11,7 +11,7 @@ class ThumbnailerImageField(serializers.ImageField):
         if not value:
             return None
         urls = {'original': value.url}
-        key = "{0}.{1}.{2}".format(
+        key = "{}.{}.{}".format(
             value.instance._meta.app_label,
             value.instance._meta.object_name,
             value.field.name

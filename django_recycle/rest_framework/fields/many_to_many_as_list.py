@@ -12,7 +12,7 @@ class ManyToManyAsListField(Field):
 
     def from_native(self, data):
         filter_kwargs = {
-            "{}__in".format(self.field_name): data
+            f"{self.field_name}__in": data
         }
         exists = list(self.model._default_manager.filter(**filter_kwargs))
         exists_vals = [getattr(obj, self.field_name) for obj in exists]

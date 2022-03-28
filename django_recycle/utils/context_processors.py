@@ -1,7 +1,7 @@
 import importlib
 
 
-class ModuleConstants(object):
+class ModuleConstants:
     __name__ = ""
 
     def __init__(self, module):

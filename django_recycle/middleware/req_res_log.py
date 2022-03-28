@@ -60,7 +60,7 @@ class LoggingMiddleware(MiddlewareMixin):
 
         duration = time.time() - req_res_log['start_time']
         request_headers = "\n".join([
-            "{}: {}".format(k, v)
+            f"{k}: {v}"
             for k, v in list(get_request_headers(request).items())
             ])
         mp = 'multipart' in request.META.get('CONTENT_TYPE', '')
@@ -71,12 +71,12 @@ class LoggingMiddleware(MiddlewareMixin):
 
         respone_content = ""
         try:
-            response_content = six.text_type(
+            response_content = str(
                 getattr(response, "content", "File response")
                 )
         except UnicodeDecodeError:
             try:
-                response_content = six.text_type(
+                response_content = str(
                     getattr(response, "content", "File response").decode("utf8")
                     )
             except UnicodeDecodeError:
@@ -84,7 +84,7 @@ class LoggingMiddleware(MiddlewareMixin):
 
         try:
             # request_body = unicode(request_body, "utf8", errors="ignore").encode("ascii", "ignore")
-            request_body = six.text_type(request_body)
+            request_body = str(request_body)
         except UnicodeDecodeError:
             try:
                 request_body = request_body.decode("utf8")

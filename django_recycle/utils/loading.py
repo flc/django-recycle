@@ -7,7 +7,7 @@ def import_class(class_string):
     return getattr(m, classname)
 
 
-class ClassMapper(object):
+class ClassMapper:
     overrides = {}
 
     def __init__(self, module_pattern, attr_name,

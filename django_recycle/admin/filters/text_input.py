@@ -12,7 +12,7 @@ class SingleTextInputFilter(ListFilter):
     template = "admin/textinput_filter.html"
 
     def __init__(self, request, params, model, model_admin):
-        super(SingleTextInputFilter, self).__init__(
+        super().__init__(
             request, params, model, model_admin)
         if self.parameter_name is None:
             raise ImproperlyConfigured(

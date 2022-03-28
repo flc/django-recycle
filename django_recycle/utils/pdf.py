@@ -31,5 +31,5 @@ def render_to_pdf_pdfkit(request, template_name, context, filename, extra_option
     response = HttpResponse(content_type='application/pdf')
     response.write(pdf)
     if filename is not None:
-        response['Content-Disposition'] = 'attachment; filename={}'.format(filename)
+        response['Content-Disposition'] = f'attachment; filename={filename}'
     return response

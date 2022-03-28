@@ -70,17 +70,17 @@ class FieldsInBackend(filters.BaseFilterBackend):
         params = request.query_params
         filters = {}
         for field in self.fields:
-            field_param = "{}__in".format(field)
+            field_param = f"{field}__in"
             param_value = None
             if field_param in params:
                 param_value = params[field_param]
             if not param_value:
                 continue
             try:
-                values = set([
+                values = {
                     v.strip()
                     for v in param_value.split(self.delimiter)
-                    ])
+                    }
             except Exception:
                 continue
             filters[field_param] = values

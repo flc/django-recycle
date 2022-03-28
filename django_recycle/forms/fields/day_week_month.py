@@ -20,7 +20,7 @@ class DayWeekMonthWidget(forms.MultiWidget):
             widgets.TextInput(),
             widgets.Select(choices=CHOICES),
         )
-        super(DayWeekMonthWidget, self).__init__(_widgets, *args, **kwargs)
+        super().__init__(_widgets, *args, **kwargs)
 
     def decompress(self, value):
         if value:
@@ -46,7 +46,7 @@ class DayWeekMonthField(forms.MultiValueField):
                                    required=True,
                                    coerce=int),
         )
-        super(DayWeekMonthField, self).__init__(fields, *args, **kwargs)
+        super().__init__(fields, *args, **kwargs)
 
     def compress(self, data_list):
         if len(data_list) == 2:

@@ -8,11 +8,11 @@ def get_obj_closest_to(qs, field, target):
     :param target: target timestamp (datetime object)
     """
     closest_greater_qs = qs.filter(
-        **{'{}__gte'.format(field): target}
+        **{f'{field}__gte': target}
         ).order_by(field)
     closest_less_qs = qs.filter(
-        **{'{}__lte'.format(field): target}
-        ).order_by('-{}'.format(field))
+        **{f'{field}__lte': target}
+        ).order_by(f'-{field}')
 
     try:
         try:

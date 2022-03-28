@@ -19,6 +19,6 @@ class EmailOrUsernameModelBackend(ModelBackend):
                 User.set_password(password)
                 return None
         except validators.ValidationError:
-            return super(EmailOrUsernameModelBackend, self).authenticate(
+            return super().authenticate(
                 username=identification, password=password
                 )

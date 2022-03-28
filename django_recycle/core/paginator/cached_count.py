@@ -24,7 +24,7 @@ class CachedCountPaginator(Paginator):
         """
         if getattr(self, '_count', None) is None:
             try:
-                key = "cachedcountpaginator:{0}".format(
+                key = "cachedcountpaginator:{}".format(
                     hash(self.object_list.query.__str__())
                     )
                 self._count = cache.get(key, -1)

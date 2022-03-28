@@ -6,5 +6,5 @@ def explain_query(qs, analyze=False):
     cursor = connection.cursor()
     an = " ANALYZE" if analyze else ""
     comm = "".join(["EXPLAIN", an])
-    cursor.execute("{} {}".format(comm, query_str))
+    cursor.execute(f"{comm} {query_str}")
     return "\n".join([i[0] for i in cursor.fetchall()])

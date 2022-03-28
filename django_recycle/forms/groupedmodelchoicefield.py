@@ -28,8 +28,7 @@ class GroupedModelChoiceIterator(ModelChoiceIterator):
                         for group, choices in groupby(query,
                             key=lambda row: getattr(row, group_by_field))
                 ]
-            for choice in choice_cache:
-                yield choice
+            yield from choice_cache
         else:
             for group, choices in groupby(
                                 query,
@@ -41,14 +40,14 @@ class GroupedModelChoiceIterator(ModelChoiceIterator):
                     )
 
 
-class GroupedModelChoiceFieldMixin(object):
+class GroupedModelChoiceFieldMixin:
 
     def __init__(self, group_by_field, group_label=None, *args, **kwargs):
         """
         group_by_field is the name of a field on the model
         group_label is a function to return a label for each choice group
         """
-        super(GroupedModelChoiceFieldMixin, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         self.group_by_field = group_by_field
         if group_label is None:
             self.group_label = lambda group: group

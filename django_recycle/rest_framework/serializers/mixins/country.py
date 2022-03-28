@@ -7,15 +7,15 @@ from django_countries.fields import CountryField as CountryModelField
 
 
 def _to_representation(self, value):
-    if six.text_type(value) == '':
+    if str(value) == '':
         return ''
     return ChoiceField.to_representation(self, value)
 
 
-class CountryFieldMixin(object):
+class CountryFieldMixin:
 
     def __init__(self, *args, **kwargs):
-        super(CountryFieldMixin, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
 
         # XXX uh, this is gonna be a bit ugly
         # we will monkeypatch ChoiceField.to_representation
@@ -28,12 +28,7 @@ class CountryFieldMixin(object):
             except FieldDoesNotExist:
                 continue
             if isinstance(model_field, CountryModelField):
-                if six.PY2:
-                    new_method = types.MethodType(
-                        _to_representation, field, ChoiceField
-                        )
-                else:
-                    new_method = types.MethodType(
-                        _to_representation, field
-                        )
+                new_method = types.MethodType(
+                    _to_representation, field
+                    )
                 field.to_representation = new_method
