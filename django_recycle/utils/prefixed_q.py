@@ -7,7 +7,7 @@ class PrefixedQ(Q):
     def __init__(self, **kwargs):
         # Prefix all the dictionary keys
         super(PrefixedQ, self).__init__(**dict(
-            (self.prefix(k), v) for k, v in kwargs.items()
+            (self.prefix(k), v) for k, v in list(kwargs.items())
         ))
 
     def prefix(self, *args):

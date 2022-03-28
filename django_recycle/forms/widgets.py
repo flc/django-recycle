@@ -39,7 +39,7 @@ class ClassAttrAwareHiddenInput(ClassAttrAwareWidgetMixin, forms.HiddenInput):
 class HorizontalRadioRenderer(forms.RadioSelect.renderer):
 
     def render(self):
-        return mark_safe(u'\n'.join([u'%s\n' % w for w in self]))
+        return mark_safe('\n'.join(['%s\n' % w for w in self]))
 
 
 class NewlinePreservingTextarea(forms.widgets.Textarea):
@@ -48,5 +48,5 @@ class NewlinePreservingTextarea(forms.widgets.Textarea):
         if value is None:
             value = ''
         final_attrs = self.build_attrs(attrs, name=name)
-        return mark_safe(u'<textarea%s>\r\n%s</textarea>' % (flatatt(final_attrs),
+        return mark_safe('<textarea%s>\r\n%s</textarea>' % (flatatt(final_attrs),
                 conditional_escape(force_text(value))))

@@ -17,7 +17,7 @@ def send_mail_with_attachments(
     email = EmailMessage(subject, message, from_email, recipient_list,
                          connection=connection)
 
-    if isinstance(attach_paths, basestring):
+    if isinstance(attach_paths, str):
         attach_paths = [attach_paths]
     for path in attach_paths:
         email.attach_file(path)

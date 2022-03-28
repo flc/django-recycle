@@ -26,7 +26,7 @@ class MoneyFieldMixin(object):
         model = getattr(self.Meta, 'model')
         read_only_fields = getattr(self.Meta, 'read_only_fields', None)
 
-        for name, field in self.fields.items():
+        for name, field in list(self.fields.items()):
             if name in declared_fields:
                 # if the field is declared explicitly we don't
                 # do any manipulation with it, we assume the developer

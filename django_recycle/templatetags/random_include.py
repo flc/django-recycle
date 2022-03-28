@@ -34,6 +34,6 @@ def random_include(parser, token):
     """
     bits = token.contents.split()
     if len(bits) != 2:
-        raise TemplateSyntaxError, "%r tag takes one argument: the name of the template to be included" % bits[0]
+        raise TemplateSyntaxError("%r tag takes one argument: the name of the template to be included" % bits[0])
     # path = bits[1]
     return RandomIncludeNode(bits[1])

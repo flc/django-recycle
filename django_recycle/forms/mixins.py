@@ -20,7 +20,7 @@ class PrefixedErrorsFormMixin(object):
         errors = super(PrefixedErrorsFormMixin, self).errors
         # includes the prefix in the error keys
         new_errors = {}
-        for key, value in errors.items():
+        for key, value in list(errors.items()):
             new_errors["{0}-{1}".format(self.prefix, key)] = value
         return new_errors
 

@@ -77,7 +77,7 @@ class UploadProgressCachedHandler(FileUploadHandler):
 
             cache.set(self.cache_key, data)
 
-            if not (self.chunk_count.next() % 100):
+            if not (next(self.chunk_count) % 100):
                 logger.debug("Updated cache key %s with %s.",
                              self.cache_key, data)
 

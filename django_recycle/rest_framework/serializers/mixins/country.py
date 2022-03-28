@@ -22,7 +22,7 @@ class CountryFieldMixin(object):
         # on the instance level
         model = getattr(self.Meta, 'model')
 
-        for name, field in self.fields.items():
+        for name, field in list(self.fields.items()):
             try:
                 model_field = model._meta.get_field(name)
             except FieldDoesNotExist:

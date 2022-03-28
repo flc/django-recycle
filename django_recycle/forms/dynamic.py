@@ -31,7 +31,7 @@ class DynamicMultiForm(object):
         return self.as_table()
 
     def as_table(self):
-        return mark_safe(u'\n'.join([form.as_table() for form in self.forms]))
+        return mark_safe('\n'.join([form.as_table() for form in self.forms]))
 
     def save(self, commit=True):
         return tuple([form.save(commit) for form in self.forms])
@@ -64,7 +64,7 @@ class DynamicMultiForm(object):
                 else:
                     form_errors.append(form.errors)
         errors = {
-            NON_FIELD_ERRORS: map(lambda x: six.text_type(x), self._errors),
+            NON_FIELD_ERRORS: [six.text_type(x) for x in self._errors],
             'forms': form_errors,
         }
         return errors
@@ -83,5 +83,5 @@ class DynamicMultiForm(object):
 
     def __iter__(self):
         for form in self.forms:
-            for name, field in form.fields.items():
+            for name, field in list(form.fields.items()):
                 yield BoundField(form, field, name)

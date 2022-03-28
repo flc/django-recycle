@@ -26,7 +26,7 @@ class DynamicFieldsMixin(object):
         keep_fields = set([f.strip() for f in fields.split(',')]).union(
             set(self.get_dynamic_fields_protected())
             )
-        for name, field in self.fields.items():
+        for name, field in list(self.fields.items()):
             if name in keep_fields:
                 continue
             del self.fields[name]

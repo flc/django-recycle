@@ -1,5 +1,5 @@
 try:
-    import urlparse
+    import urllib.parse
 except ImportError:  # python3
     import urllib.parse as urlparse
 
@@ -15,7 +15,7 @@ def anon_redirect_to(request):
     if not url:
         return HttpResponseBadRequest()
 
-    parsed_url = urlparse.urlparse(url)
+    parsed_url = urllib.parse.urlparse(url)
     scheme = parsed_url.scheme or "http"
     if not url.startswith(scheme):
         url = "://".join([scheme, url])

@@ -61,7 +61,7 @@ class LoggingMiddleware(MiddlewareMixin):
         duration = time.time() - req_res_log['start_time']
         request_headers = "\n".join([
             "{}: {}".format(k, v)
-            for k, v in get_request_headers(request).items()
+            for k, v in list(get_request_headers(request).items())
             ])
         mp = 'multipart' in request.META.get('CONTENT_TYPE', '')
         if mp:
@@ -95,16 +95,16 @@ class LoggingMiddleware(MiddlewareMixin):
                     request_body = 'Unidecode error'
 
         logger.debug(
-          u"\n"
-          u"Request method: %s\n"
-          u"Request path: %s\n"
-          u"Request headers:\n%s\n\n"
-          u"Request GET: %s\n\n"
-          u"Request body: %s\n\n"
-          u"Response code: %s %s\n\n"
-          u"Response content:\n%s\n\n"
-          u"Response headers:\n%s\n\n"
-          u"Duration: %s seconds",
+          "\n"
+          "Request method: %s\n"
+          "Request path: %s\n"
+          "Request headers:\n%s\n\n"
+          "Request GET: %s\n\n"
+          "Request body: %s\n\n"
+          "Response code: %s %s\n\n"
+          "Response content:\n%s\n\n"
+          "Response headers:\n%s\n\n"
+          "Duration: %s seconds",
           request.method,
           request.path,
           request_headers,

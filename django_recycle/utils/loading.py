@@ -21,7 +21,7 @@ class ClassMapper(object):
         self._cache = {}
 
     def _get_fallback_class(self):
-        if not isinstance(self.fallback_class, basestring):
+        if not isinstance(self.fallback_class, str):
             # assume it's a class already
             klass = self.fallback_class
         else:
@@ -35,7 +35,7 @@ class ClassMapper(object):
         klass = None
         klass_path = self.overrides.get(name, None)
         if klass_path is not None:
-            if not isinstance(klass_path, basestring):
+            if not isinstance(klass_path, str):
                 # assume it's a class already
                 klass = klass_path
             else:

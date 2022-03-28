@@ -1,6 +1,6 @@
 try:
-    import StringIO
-    IO_class = StringIO.StringIO
+    import io
+    IO_class = io.StringIO
 except ImportError:
     import io
     IO_class = io.BytesIO

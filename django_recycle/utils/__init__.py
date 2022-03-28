@@ -37,7 +37,7 @@ def add_query_extra_item(query_extras, query_extra):
     if query_extra:
         if 'select' in query_extra:
             query_extras['select'].extend(
-                query_extra['select'].items()
+                list(query_extra['select'].items())
                 )
         if 'select_params' in query_extra:
             query_extras['select_params'].extend(

@@ -5,7 +5,7 @@ class ModuleConstants(object):
     __name__ = ""
 
     def __init__(self, module):
-        if isinstance(module, basestring):
+        if isinstance(module, str):
             try:
                 module = importlib.import_module(module)
             except ImportError:

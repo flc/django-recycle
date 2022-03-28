@@ -23,7 +23,7 @@ class ClientSideExceptionLoggerView(generics.GenericAPIView):
         if isinstance(stacktrace, list):
             stacktrace = "\n".join(stacktrace)
         text = (
-            u"\nuser: %s\n"
+            "\nuser: %s\n"
             "ip: %s\n"
             "user agent: %s\n"
             "url: %s\n"

@@ -1,6 +1,6 @@
 import os
 try:
-    import urlparse
+    import urllib.parse
 except ImportError:  # python3
     import urllib.parse as urlparse
 
@@ -25,7 +25,7 @@ def static_file_url_fetcher(url):
     elif url.startswith(media_prefix):
         path = url.split(media_prefix)[1]
         file_path = os.path.join(settings.MEDIA_ROOT, path)
-    elif urlparse.urlparse(url).path.startswith(settings.STATIC_URL):
+    elif urllib.parse.urlparse(url).path.startswith(settings.STATIC_URL):
         path = url.split(settings.STATIC_URL)[1]
         file_path = os.path.join(settings.STATIC_ROOT, path)
 

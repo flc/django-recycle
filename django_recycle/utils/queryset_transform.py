@@ -71,7 +71,7 @@ def lookup_foreignkey(items, fields):
 
         query_model = field.rel.to
         objs = []
-        for obj in query_model.objects.filter(id__in=dd.keys()).iterator():
+        for obj in query_model.objects.filter(id__in=list(dd.keys())).iterator():
             for item in dd[obj.id]:
                 setattr(item, field_name, obj)
                 objs.append(obj)

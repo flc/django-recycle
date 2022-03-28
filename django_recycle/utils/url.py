@@ -1,5 +1,5 @@
 try:
-    import urlparse
+    import urllib.parse
 except ImportError:  # python3
     import urllib.parse as urlparse
 
@@ -17,7 +17,7 @@ def url_with_domain(path):
         protocol=getattr(settings, "DEFAULT_HTTP_PROTOCOL", "http"),
         domain=Site.objects.get_current().domain,
     )
-    return urlparse.urljoin(domain, path)
+    return urllib.parse.urljoin(domain, path)
 
 
 def reverse_with_domain(*args, **kwargs):
@@ -32,7 +32,7 @@ def reverse_build_url(*args, **kwargs):
         return url
 
     qdict = QueryDict('', mutable=True)
-    for k, v in params.iteritems():
+    for k, v in params.items():
         if type(v) is list:
             qdict.setlist(k, v)
         else:
