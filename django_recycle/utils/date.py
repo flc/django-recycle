@@ -1,6 +1,5 @@
 import datetime
-
-from django.utils.translation import ungettext, ugettext as _
+from django.utils.translation import gettext as _, ngettext
 
 
 def date_diff(d, date=False):
@@ -15,13 +14,13 @@ def date_diff(d, date=False):
     if days == 0:
         if hours == 0:
             if minutes > 0:
-                return ungettext(
+                return ngettext(
                             '1 minute ago',
                             '%(minutes)d minutes ago',
                             minutes
                 ) % {'minutes': minutes}
             return _("just now")
-        return ungettext(
+        return ngettext(
                         '1 hour ago',
                         '%(hours)d hours ago',
                         hours

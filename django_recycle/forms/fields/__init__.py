@@ -1,4 +1,3 @@
-from django.utils.translation import ugettext_lazy as _
 
 from accounts.helpers import get_full_name_or_username
 
@@ -21,3 +20,4 @@ class UserGroupModelChoiceField(FormFieldWithFormMixin,
 
 
 from .day_week_month import *
+from django.utils.translation import gettext_lazy as _

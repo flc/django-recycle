@@ -1,7 +1,7 @@
 from django import forms
-from django.forms.forms import BoundField
-from django.utils.translation import ugettext as _
-from django.utils.translation import ugettext
+from django.forms.boundfield import BoundField
+from django.utils.translation import gettext as _
+from django.utils.translation import gettext
 
 from core.utils.looping import grouper
 
@@ -129,7 +129,7 @@ class MinMaxFormMixin(forms.Form):
 
             if min_value is not None and max_value is not None:
                 if min_value > max_value:
-                    error_msg = ugettext("Max value should be greater than "
+                    error_msg = gettext("Max value should be greater than "
                                          "or equal to min value.")
                     self._errors[min_name] = self.error_class([error_msg])
                     # These fields are no longer valid. Remove them from the
@@ -154,7 +154,7 @@ class RequiredMinMaxFormMixin(MinMaxFormMixin):
                 self._errors.get(max_name, None) is None):
                 # both are valid so far
                 if min_value is None and max_value is None:
-                    error_msg = ugettext("You have to specify either "
+                    error_msg = gettext("You have to specify either "
                                          "the min or the max value.")
                     self._errors[min_name] = self.error_class([error_msg])
                     # These fields are no longer valid. Remove them

@@ -14,7 +14,7 @@ class ClientSideExceptionLoggerView(generics.GenericAPIView):
     def post(self, request, format=None):
         logger = logging.getLogger("client_side_exceptions")
         ip = get_ip_of_request(self.request, ip_resolver=self.ip_resolver_func)
-        user_agent = request.META.get('HTTP_USER_AGENT', '')
+        user_agent = request.headers.get('User-Agent', '')
         url = request.DATA.get("url")
         message = request.DATA.get("message")
         cause = request.DATA.get("cause")

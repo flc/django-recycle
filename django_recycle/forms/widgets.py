@@ -8,7 +8,7 @@ from django.utils.html import conditional_escape
 try:
     from django.utils.encoding import force_unicode as force_text
 except ImportError:
-    from django.utils.encoding import force_text  # Python 3
+    from django.utils.encoding import force_str  # Python 3
 
 
 class ClassAttrAwareWidgetMixin:
@@ -49,4 +49,4 @@ class NewlinePreservingTextarea(forms.widgets.Textarea):
             value = ''
         final_attrs = self.build_attrs(attrs, name=name)
         return mark_safe('<textarea%s>\r\n%s</textarea>' % (flatatt(final_attrs),
-                conditional_escape(force_text(value))))
+                conditional_escape(force_str(value))))

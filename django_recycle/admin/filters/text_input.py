@@ -1,7 +1,7 @@
 from django.contrib.admin import ListFilter
-from django.utils.translation import ugettext_lazy as _
 from django.contrib import messages
 from django.core.exceptions import ImproperlyConfigured
+from django.utils.translation import gettext_lazy as _
 
 
 class SingleTextInputFilter(ListFilter):

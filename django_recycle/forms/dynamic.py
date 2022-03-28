@@ -1,7 +1,8 @@
 import six
 
-from django.forms.forms import NON_FIELD_ERRORS, BoundField
+from django.forms.forms import NON_FIELD_ERRORS
 from django.utils.safestring import mark_safe
+from django.forms.boundfield import BoundField
 
 
 class DynamicMultiForm:

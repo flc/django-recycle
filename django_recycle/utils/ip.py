@@ -29,7 +29,7 @@ def x_forwarded_ip(request):
     This function assumes that your Nginx is configured with:
     proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
     """
-    ip_address_list = request.META.get('HTTP_X_FORWARDED_FOR')
+    ip_address_list = request.headers.get('X-Forwarded-For')
     if ip_address_list:
         ip_address_list = ip_address_list.split(',')
         return ip_address_list[0]
@@ -39,4 +39,4 @@ def real_ip(request):
     """
     Behind a Wsgi (Nginx) server.
     """
-    return request.META.get('HTTP_X_REAL_IP') or None
+    return request.headers.get('X-Real-Ip') or None
