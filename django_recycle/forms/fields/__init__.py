@@ -1,13 +1,10 @@
-
 from accounts.helpers import get_full_name_or_username
 
 from ..mixins import FormFieldWithFormMixin
 from ..groupedmodelchoicefield import GroupedModelChoiceField
 
 
-class UserGroupModelChoiceField(FormFieldWithFormMixin,
-                                GroupedModelChoiceField):
-
+class UserGroupModelChoiceField(FormFieldWithFormMixin, GroupedModelChoiceField):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 

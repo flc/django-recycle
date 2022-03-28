@@ -7,12 +7,8 @@ def get_obj_closest_to(qs, field, target):
     :param field: name of the datetime field
     :param target: target timestamp (datetime object)
     """
-    closest_greater_qs = qs.filter(
-        **{f'{field}__gte': target}
-        ).order_by(field)
-    closest_less_qs = qs.filter(
-        **{f'{field}__lte': target}
-        ).order_by(f'-{field}')
+    closest_greater_qs = qs.filter(**{f'{field}__gte': target}).order_by(field)
+    closest_less_qs = qs.filter(**{f'{field}__lte': target}).order_by(f'-{field}')
 
     try:
         try:
@@ -25,9 +21,7 @@ def get_obj_closest_to(qs, field, target):
         except IndexError:
             return closest_greater_qs[0]
     except IndexError:
-        raise qs.model.DoesNotExist(
-            "There is no closest object because there aren't any objects."
-            )
+        raise qs.model.DoesNotExist("There is no closest object because there aren't any objects.")
 
     if getattr(closest_greater, field) - target > target - getattr(closest_less, field):
         return closest_less

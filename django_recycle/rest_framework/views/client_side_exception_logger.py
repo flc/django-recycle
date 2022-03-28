@@ -32,6 +32,6 @@ class ClientSideExceptionLoggerView(generics.GenericAPIView):
             "type: %s\n"
             "stacktrace:\n"
             "%s\n"
-            )
+        )
         getattr(logger, self.log_level)(text, request.user, ip, user_agent, url, message, cause, type, stacktrace)
         return Response()

@@ -34,8 +34,7 @@ class FieldsFilterBackend(filters.BaseFilterBackend):
                             value = True
                 else:
                     if isinstance(value, str) and isinstance(
-                        model_field,
-                        (models.BooleanField, models.NullBooleanField)
+                        model_field, (models.BooleanField, models.NullBooleanField)
                     ):
                         if value.lower() in ("false", "0"):
                             value = False
@@ -44,8 +43,10 @@ class FieldsFilterBackend(filters.BaseFilterBackend):
                         elif value.lower() in ("null",):
                             value = None
 
-                    if isinstance(value, str) and model_field.null and not isinstance(
-                        model_field, (models.CharField, models.TextField)
+                    if (
+                        isinstance(value, str)
+                        and model_field.null
+                        and not isinstance(model_field, (models.CharField, models.TextField))
                     ):
                         if value.lower() in ("null",):
                             value = None
@@ -77,10 +78,7 @@ class FieldsInBackend(filters.BaseFilterBackend):
             if not param_value:
                 continue
             try:
-                values = {
-                    v.strip()
-                    for v in param_value.split(self.delimiter)
-                    }
+                values = {v.strip() for v in param_value.split(self.delimiter)}
             except Exception:
                 continue
             filters[field_param] = values

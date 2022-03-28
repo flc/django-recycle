@@ -19,16 +19,10 @@ class TaggedItemViewMixin:
         if type(getattr(tagged_obj, self.tags_field_name)) is list:
             # If tags were provided in the request
             try:
-                saved_obj = tagged_obj._meta.model.objects.get(
-                    pk=tagged_obj.pk
-                    )
+                saved_obj = tagged_obj._meta.model.objects.get(pk=tagged_obj.pk)
                 # XXX optimize later
                 tags_field = getattr(saved_obj, self.tags_field_name)
                 tags_field.clear()
             except tagged_obj._meta.model.DoesNotExist:
                 pass
-            tags_field.add(
-                *self._adjust_tags_data(
-                    getattr(tagged_obj, self.tags_field_name)
-                    )
-                )
+            tags_field.add(*self._adjust_tags_data(getattr(tagged_obj, self.tags_field_name)))

@@ -28,9 +28,7 @@ class UploadProgressCachedHandler(FileUploadHandler):
         self.activated = False
         self.chunk_count = count(1)
 
-    def handle_raw_input(self,
-                         input_data, META, content_length,
-                         boundary, encoding=None):
+    def handle_raw_input(self, input_data, META, content_length, boundary, encoding=None):
         if content_length > self.chunk_size:
             self.activated = True
         else:
@@ -42,19 +40,17 @@ class UploadProgressCachedHandler(FileUploadHandler):
             self.progress_id = self.request.META['X-Progress-ID']
 
         if self.progress_id:
-            self.cache_key = "%s_%s" % (self.request.META['REMOTE_ADDR'],
-                                        self.progress_id)
+            self.cache_key = "%s_%s" % (self.request.META['REMOTE_ADDR'], self.progress_id)
             data = {
                 'size': content_length,
                 'received': 0,
                 'speed': 0,
                 'remaining_time': 0,
                 'prev_timestamp': time(),
-                'curr_timestamp': time()
+                'curr_timestamp': time(),
             }
             cache.set(self.cache_key, data)
-            logger.debug("Initialized cache key %s with %s.",
-                         self.cache_key, data)
+            logger.debug("Initialized cache key %s with %s.", self.cache_key, data)
         else:
             logger.debug("No progress id provided.")
 
@@ -78,8 +74,7 @@ class UploadProgressCachedHandler(FileUploadHandler):
             cache.set(self.cache_key, data)
 
             if not (next(self.chunk_count) % 100):
-                logger.debug("Updated cache key %s with %s.",
-                             self.cache_key, data)
+                logger.debug("Updated cache key %s with %s.", self.cache_key, data)
 
         return raw_data
 
@@ -88,6 +83,5 @@ class UploadProgressCachedHandler(FileUploadHandler):
 
     def upload_complete(self):
         if self.activated and self.cache_key:
-            logger.debug('Upload complete for cache key %s.',
-                         self.cache_key)
+            logger.debug('Upload complete for cache key %s.', self.cache_key)
             cache.delete(self.cache_key)

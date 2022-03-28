@@ -6,7 +6,6 @@ logger = logging.getLogger(__name__)
 
 
 class EmailChecker:
-
     def __init__(self, paths):
         self.paths = paths
 

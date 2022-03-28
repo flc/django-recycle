@@ -14,7 +14,6 @@ CHOICES = (
 
 
 class DayWeekMonthWidget(forms.MultiWidget):
-
     def __init__(self, *args, **kwargs):
         _widgets = (
             widgets.TextInput(),
@@ -40,11 +39,8 @@ class DayWeekMonthField(forms.MultiValueField):
         except KeyError:
             max_value = None
         fields = (
-            forms.IntegerField(min_value=min_value, max_value=max_value,
-                               required=True),
-            forms.TypedChoiceField(choices=CHOICES,
-                                   required=True,
-                                   coerce=int),
+            forms.IntegerField(min_value=min_value, max_value=max_value, required=True),
+            forms.TypedChoiceField(choices=CHOICES, required=True, coerce=int),
         )
         super().__init__(fields, *args, **kwargs)
 

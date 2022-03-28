@@ -29,11 +29,7 @@ def copy_qdict(qdict, exclude=None):
 def add_query_extra_item(query_extras, query_extra):
     if query_extra:
         if 'select' in query_extra:
-            query_extras['select'].extend(
-                list(query_extra['select'].items())
-                )
+            query_extras['select'].extend(list(query_extra['select'].items()))
         if 'select_params' in query_extra:
-            query_extras['select_params'].extend(
-                query_extra['select_params']
-                )
+            query_extras['select_params'].extend(query_extra['select_params'])
     return query_extras

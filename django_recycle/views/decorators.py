@@ -9,8 +9,8 @@ from ..utils.compat import available_attrs
 
 def view_decorator(orig_dec):
     """
-        Convert the provided decorator to one that can be applied to a view
-        class (ie. automatically decorates dispatch)
+    Convert the provided decorator to one that can be applied to a view
+    class (ie. automatically decorates dispatch)
     """
 
     # We're going to be applying a regular decorator to a method, so the first
@@ -39,6 +39,7 @@ def view_decorator(orig_dec):
         # kept a reference to the old dispatch method earlier, in a closure.
         cls.dispatch = _dispatch
         return cls
+
     return dec
 
 
@@ -51,6 +52,7 @@ def ajax_required(view_func):
             return view_func(request, *args, **kwargs)
         else:
             return HttpResponseBadRequest()
+
     return _wrapped_view
 
 
@@ -77,13 +79,11 @@ def remove_uploadhandlers(*handler_classes):
     handler_classes = tuple(handler_classes)
 
     def decorator(view):
-
         @wraps(view, assigned=available_attrs(view))
         @csrf_exempt
         def wrapped_view(request, *args, **kwargs):
             upload_handlers = request.upload_handlers
-            new_handlers = [handler for handler in upload_handlers
-                            if not isinstance(handler, handler_classes)]
+            new_handlers = [handler for handler in upload_handlers if not isinstance(handler, handler_classes)]
             request.upload_handlers = new_handlers
 
             response = _upload_file_view(request, *args, **kwargs)
@@ -105,6 +105,7 @@ def staff_or_404(view_func):
             return view_func(request, *args, **kwargs)
         else:
             raise Http404
+
     return wraps(view_func)(_check)
 
 
@@ -114,6 +115,7 @@ def superuser_or_404(view_func):
             return view_func(request, *args, **kwargs)
         else:
             raise Http404
+
     return wraps(view_func)(_check)
 
 
@@ -127,12 +129,11 @@ def user_passes_test_or_response(test_func, response=None):
             if test_func(request.user):
                 return view_func(request, *args, **kwargs)
             return response
+
         return _wrapped_view
 
     return decorator
 
 
 def permission_required_or_response(perm, *args, **kwargs):
-    return user_passes_test_or_response(
-        lambda u: u.has_perm(perm), *args, **kwargs
-        )
+    return user_passes_test_or_response(lambda u: u.has_perm(perm), *args, **kwargs)

@@ -5,7 +5,6 @@ from ..compat import Field
 
 
 class TagListSerializer(Field):
-
     def from_native(self, data):
         if type(data) is not list:
             raise ParseError("expected a list of data")

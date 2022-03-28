@@ -10,9 +10,7 @@ def import_class(class_string):
 class ClassMapper:
     overrides = {}
 
-    def __init__(self, module_pattern, attr_name,
-                 callable_attr_name=None,
-                 fallback_class=None):
+    def __init__(self, module_pattern, attr_name, callable_attr_name=None, fallback_class=None):
         self.module_pattern = module_pattern
         self.attr_name = attr_name
         self.callable_attr_name = callable_attr_name

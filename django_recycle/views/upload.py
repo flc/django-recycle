@@ -46,5 +46,4 @@ def upload_progress(request):
             # }
         return HttpResponse(json.dumps(data))
     else:
-        return HttpResponseServerError("Server Error: You must provide "
-                                       "X-Progress-ID header or query param.")
+        return HttpResponseServerError("Server Error: You must provide X-Progress-ID header or query param.")

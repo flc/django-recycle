@@ -4,7 +4,6 @@ from django.contrib.auth import get_user_model
 
 
 class EmailOrUsernameModelBackend(ModelBackend):
-
     def authenticate(self, identification, password=None, check_password=True):
         User = get_user_model()
         try:
@@ -19,6 +18,4 @@ class EmailOrUsernameModelBackend(ModelBackend):
                 User.set_password(password)
                 return None
         except validators.ValidationError:
-            return super().authenticate(
-                username=identification, password=password
-                )
+            return super().authenticate(username=identification, password=password)

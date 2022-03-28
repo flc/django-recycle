@@ -56,10 +56,12 @@ class DynamicMultiForm:
             for form in self.forms:
                 if hasattr(form, "non_form_errors"):
                     # it's a formset
-                    form_errors.append({
-                        'formset_errors': form.non_form_errors(),
-                        'form_errors': form.errors,
-                    })
+                    form_errors.append(
+                        {
+                            'formset_errors': form.non_form_errors(),
+                            'form_errors': form.errors,
+                        }
+                    )
                 else:
                     form_errors.append(form.errors)
         errors = {

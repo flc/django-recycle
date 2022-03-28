@@ -17,6 +17,4 @@ def anon_redirect_to(request):
     if not url.startswith(scheme):
         url = "://".join([scheme, url])
 
-    return HttpResponse(format_html(
-        "<script>window.location.replace('{}');</script>", url
-        ))
+    return HttpResponse(format_html("<script>window.location.replace('{}');</script>", url))

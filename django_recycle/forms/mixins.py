@@ -7,14 +7,12 @@ from core.utils.looping import grouper
 
 
 class FormFieldWithFormMixin:
-
     def __init__(self, form, *args, **kwargs):
         self.form = form
         super().__init__(*args, **kwargs)
 
 
 class PrefixedErrorsFormMixin:
-
     @property
     def errors(self):
         errors = super().errors
@@ -35,8 +33,7 @@ def _unique_together_clean_field_method(self):
     if self._instance is not None:
         query = query.exclude(pk=self._instance.pk)
     if query.exists():
-        raise forms.ValidationError(
-                            self.get_unique_together_error_msg(field_value))
+        raise forms.ValidationError(self.get_unique_together_error_msg(field_value))
     return field_value
 
 
@@ -53,17 +50,13 @@ class ValidateUniqueTogetherFormMixin:
             self._instance = kwargs.get("instance", None)
         else:
             self._instance = kwargs.pop("instance", None)
-        setattr(self.__class__,
-                f'clean_{self.unique_together_form_field}',
-                _unique_together_clean_field_method)
+        setattr(self.__class__, f'clean_{self.unique_together_form_field}', _unique_together_clean_field_method)
         super().__init__(*args, **kwargs)
 
     def get_unique_together_filter_kwargs(self, field_value):
         kwargs = {
-            "{}__{}".format(self.unique_together_form_field,
-                        self.unique_together_form_field_lookup): field_value,
-            self.unique_together_against_field:
-                                        self.unique_together_against_value,
+            "{}__{}".format(self.unique_together_form_field, self.unique_together_form_field_lookup): field_value,
+            self.unique_together_against_field: self.unique_together_against_value,
         }
         return kwargs
 
@@ -115,8 +108,7 @@ class MinMaxFormMixin(forms.Form):
             min_field = BoundField(self, self.fields[min_name], min_name)
             max_field = BoundField(self, self.fields[max_name], max_name)
             label = self.get_min_max_field_pair_label(min_field, max_field)
-            help_text = self.get_min_max_field_pair_help_text(min_field,
-                                                              max_field)
+            help_text = self.get_min_max_field_pair_help_text(min_field, max_field)
             data.append((min_field, max_field, label, help_text))
         return data
 
@@ -129,8 +121,7 @@ class MinMaxFormMixin(forms.Form):
 
             if min_value is not None and max_value is not None:
                 if min_value > max_value:
-                    error_msg = gettext("Max value should be greater than "
-                                         "or equal to min value.")
+                    error_msg = gettext("Max value should be greater than or equal to min value.")
                     self._errors[min_name] = self.error_class([error_msg])
                     # These fields are no longer valid. Remove them from the
                     # cleaned data.
@@ -150,12 +141,10 @@ class RequiredMinMaxFormMixin(MinMaxFormMixin):
             min_value = cleaned_data.get(min_name, None)
             max_value = cleaned_data.get(max_name, None)
 
-            if (self._errors.get(min_name, None) is None and
-                self._errors.get(max_name, None) is None):
+            if self._errors.get(min_name, None) is None and self._errors.get(max_name, None) is None:
                 # both are valid so far
                 if min_value is None and max_value is None:
-                    error_msg = gettext("You have to specify either "
-                                         "the min or the max value.")
+                    error_msg = gettext("You have to specify either the min or the max value.")
                     self._errors[min_name] = self.error_class([error_msg])
                     # These fields are no longer valid. Remove them
                     # from the cleaned data.

@@ -10,6 +10,7 @@ class DynamicFieldsMixin:
                 model = MyModel
 
     """
+
     dynamic_fields_query_param_name = "fields"
     dynamic_fields_protected = ()
 
@@ -23,9 +24,7 @@ class DynamicFieldsMixin:
         if not fields:
             return
 
-        keep_fields = {f.strip() for f in fields.split(',')}.union(
-            set(self.get_dynamic_fields_protected())
-            )
+        keep_fields = {f.strip() for f in fields.split(',')}.union(set(self.get_dynamic_fields_protected()))
         for name, field in list(self.fields.items()):
             if name in keep_fields:
                 continue

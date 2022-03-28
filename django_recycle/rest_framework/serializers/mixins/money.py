@@ -17,7 +17,6 @@ def _to_representation(self, value):
 
 
 class MoneyFieldMixin:
-
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
@@ -36,16 +35,15 @@ class MoneyFieldMixin:
             except FieldDoesNotExist:
                 continue
             if isinstance(model_field, djmoney_fields.MoneyField):
-                new_method = types.MethodType(
-                    _to_representation, field
-                    )
+                new_method = types.MethodType(_to_representation, field)
                 field.to_representation = new_method
             # djmoney sets the currency field to editable=False and thus
             # rest framework considers it read_only
-            if (isinstance(model_field, djmoney_fields.CurrencyField) and
-                (not read_only_fields or name not in read_only_fields)):
+            if isinstance(model_field, djmoney_fields.CurrencyField) and (
+                not read_only_fields or name not in read_only_fields
+            ):
                 self.fields[name] = serializers.ChoiceField(
                     choices=CURRENCY_CHOICES,
                     read_only=False,
                     required=field.required,
-                    )
+                )

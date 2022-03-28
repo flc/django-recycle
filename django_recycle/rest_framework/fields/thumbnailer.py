@@ -11,11 +11,7 @@ class ThumbnailerImageField(serializers.ImageField):
         if not value:
             return None
         urls = {'original': value.url}
-        key = "{}.{}.{}".format(
-            value.instance._meta.app_label,
-            value.instance._meta.object_name,
-            value.field.name
-        )
+        key = "{}.{}.{}".format(value.instance._meta.app_label, value.instance._meta.object_name, value.field.name)
         aliases_thumbnails = aliases.all(key)
         for thumb in aliases_thumbnails:
             urls[thumb] = value[thumb].url

@@ -1,7 +1,7 @@
 from django.core.validators import (
     MaxValueValidator,
     MinValueValidator,
-    )
+)
 from django.utils.translation import gettext_lazy as _
 
 

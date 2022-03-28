@@ -6,7 +6,6 @@ from django.conf import settings
 
 
 class RandomIncludeNode(Node):
-
     def __init__(self, template_names):
         templates = template_names.split(',')
         self.template_name = Variable(random.choice(templates))

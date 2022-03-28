@@ -12,7 +12,6 @@ def _to_representation(self, value):
 
 
 class CountryFieldMixin:
-
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
@@ -27,7 +26,5 @@ class CountryFieldMixin:
             except FieldDoesNotExist:
                 continue
             if isinstance(model_field, CountryModelField):
-                new_method = types.MethodType(
-                    _to_representation, field
-                    )
+                new_method = types.MethodType(_to_representation, field)
                 field.to_representation = new_method

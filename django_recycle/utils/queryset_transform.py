@@ -32,7 +32,6 @@ class TransformQuerySet(models.query.QuerySet):
 
 
 class TransformManager(models.Manager):
-
     def get_query_set(self):
         return TransformQuerySet(self.model)
 
@@ -76,5 +75,5 @@ def lookup_foreignkey(items, fields):
                 setattr(item, field_name, obj)
                 objs.append(obj)
 
-        remaining_fields =  ["__".join(split_fields[1:])]
+        remaining_fields = ["__".join(split_fields[1:])]
         lookup_foreignkey(objs, remaining_fields)

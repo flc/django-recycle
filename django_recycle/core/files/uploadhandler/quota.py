@@ -7,7 +7,7 @@ class QuotaUploadHandler(FileUploadHandler):
     (QUOTA) is uploaded.
     """
 
-    QUOTA = 10 * 2 ** 20  # 10 MB
+    QUOTA = 10 * 2**20  # 10 MB
 
     def __init__(self, request=None):
         super().__init__(request)

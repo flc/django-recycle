@@ -15,9 +15,7 @@ class RawIdModelAdminMixin:
         db = kwargs.get('using')
         # django 2.0 compatibility
         rel = getattr(db_field, 'rel', db_field.remote_field)
-        kwargs['widget'] = widgets.ForeignKeyRawIdWidget(rel,
-                                                         self.admin_site,
-                                                         using=db)
+        kwargs['widget'] = widgets.ForeignKeyRawIdWidget(rel, self.admin_site, using=db)
         return db_field.formfield(**kwargs)
 
     def formfield_for_manytomany(self, db_field, request=None, **kwargs):
@@ -31,9 +29,7 @@ class RawIdModelAdminMixin:
             return None
 
         db = kwargs.get('using')
-        kwargs['widget'] = widgets.ManyToManyRawIdWidget(rel,
-                                                         self.admin_site,
-                                                         using=db)
+        kwargs['widget'] = widgets.ManyToManyRawIdWidget(rel, self.admin_site, using=db)
         return db_field.formfield(**kwargs)
 
 

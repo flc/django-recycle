@@ -5,9 +5,7 @@ from django.db import connection
 from django.conf import settings
 
 
-CACHED_COUNT_PAGINATOR_TIMEOUT = getattr(
-    settings, "CACHED_COUNT_PAGINATOR_TIMEOUT", 3600
-    )
+CACHED_COUNT_PAGINATOR_TIMEOUT = getattr(settings, "CACHED_COUNT_PAGINATOR_TIMEOUT", 3600)
 
 
 class CachedCountPaginator(Paginator):
@@ -24,9 +22,7 @@ class CachedCountPaginator(Paginator):
         """
         if getattr(self, '_count', None) is None:
             try:
-                key = "cachedcountpaginator:{}".format(
-                    hash(self.object_list.query.__str__())
-                    )
+                key = "cachedcountpaginator:{}".format(hash(self.object_list.query.__str__()))
                 self._count = cache.get(key, -1)
                 if self._count == -1:
                     if not self.object_list.query.where:
@@ -36,8 +32,8 @@ class CachedCountPaginator(Paginator):
                             cursor = connection.cursor()
                             cursor.execute(
                                 "SELECT reltuples FROM pg_class WHERE relname = %s",
-                                [self.object_list.query.model._meta.db_table]
-                                )
+                                [self.object_list.query.model._meta.db_table],
+                            )
                             self._count = int(cursor.fetchone()[0])
 
                     if self._count == -1:
@@ -50,4 +46,5 @@ class CachedCountPaginator(Paginator):
                 # (i.e. is of type list).
                 self._count = len(self.object_list)
         return self._count
+
     count = property(_get_count)

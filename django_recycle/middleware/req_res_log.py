@@ -11,9 +11,7 @@ logger = logging.getLogger(__name__)
 
 
 # empty means we log everything
-REQUEST_RESPONSE_LOG_PATHS = getattr(
-    settings, "REQUEST_RESPONSE_LOG_PATHS", ()
-    )
+REQUEST_RESPONSE_LOG_PATHS = getattr(settings, "REQUEST_RESPONSE_LOG_PATHS", ())
 
 
 def get_request_headers(request):
@@ -37,7 +35,7 @@ class LoggingMiddleware(MiddlewareMixin):
         request._req_res_log = {
             'body': request.body,
             'start_time': time.time(),
-            }
+        }
 
     def process_response(self, request, response):
         """
@@ -57,10 +55,7 @@ class LoggingMiddleware(MiddlewareMixin):
             return response
 
         duration = time.time() - req_res_log['start_time']
-        request_headers = "\n".join([
-            f"{k}: {v}"
-            for k, v in list(get_request_headers(request).items())
-            ])
+        request_headers = "\n".join([f"{k}: {v}" for k, v in list(get_request_headers(request).items())])
         mp = 'multipart' in request.META.get('CONTENT_TYPE', '')
         if mp:
             request_body = 'Multipart data'
@@ -69,14 +64,10 @@ class LoggingMiddleware(MiddlewareMixin):
 
         respone_content = ""
         try:
-            response_content = str(
-                getattr(response, "content", "File response")
-                )
+            response_content = str(getattr(response, "content", "File response"))
         except UnicodeDecodeError:
             try:
-                response_content = str(
-                    getattr(response, "content", "File response").decode("utf8")
-                    )
+                response_content = str(getattr(response, "content", "File response").decode("utf8"))
             except UnicodeDecodeError:
                 response_content = ""
 
@@ -93,25 +84,26 @@ class LoggingMiddleware(MiddlewareMixin):
                     request_body = 'Unidecode error'
 
         logger.debug(
-          "\n"
-          "Request method: %s\n"
-          "Request path: %s\n"
-          "Request headers:\n%s\n\n"
-          "Request GET: %s\n\n"
-          "Request body: %s\n\n"
-          "Response code: %s %s\n\n"
-          "Response content:\n%s\n\n"
-          "Response headers:\n%s\n\n"
-          "Duration: %s seconds",
-          request.method,
-          request.path,
-          request_headers,
-          request.GET,
-          request_body,
-          response.status_code, response.reason_phrase,
-          response_content,
-          response.serialize_headers(),
-          duration,
+            "\n"
+            "Request method: %s\n"
+            "Request path: %s\n"
+            "Request headers:\n%s\n\n"
+            "Request GET: %s\n\n"
+            "Request body: %s\n\n"
+            "Response code: %s %s\n\n"
+            "Response content:\n%s\n\n"
+            "Response headers:\n%s\n\n"
+            "Duration: %s seconds",
+            request.method,
+            request.path,
+            request_headers,
+            request.GET,
+            request_body,
+            response.status_code,
+            response.reason_phrase,
+            response_content,
+            response.serialize_headers(),
+            duration,
         )
 
         return response

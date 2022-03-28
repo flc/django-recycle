@@ -29,26 +29,17 @@ def get_db_table_sizes(top_n=None, order_by=1, pretty=True):
 
     sizes = []
     for table in tables:
-        cursor.execute(
-            f"SELECT {with_indexes_select}, {without_indexes_select}",
-            [table, table]
-            )
+        cursor.execute(f"SELECT {with_indexes_select}, {without_indexes_select}", [table, table])
         row = cursor.fetchone()
         sizes.append((table, row[0], row[1]))
 
-    sorted_sizes = sorted(
-        sizes, key=operator.itemgetter(order_by), reverse=True
-        )
+    sorted_sizes = sorted(sizes, key=operator.itemgetter(order_by), reverse=True)
 
     if pretty:
         sorted_sizes = [
-            (
-                table,
-                filesizeformat(size1).replace("\xa0", " "),
-                filesizeformat(size2).replace("\xa0", " ")
-            )
+            (table, filesizeformat(size1).replace("\xa0", " "), filesizeformat(size2).replace("\xa0", " "))
             for table, size1, size2 in sorted_sizes
-            ]
+        ]
 
     if top_n is not None:
         sorted_sizes = sorted_sizes[:top_n]

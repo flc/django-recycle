@@ -8,7 +8,6 @@ from django.utils.encoding import force_str
 
 
 class ClassAttrAwareWidgetMixin:
-
     def build_attrs(self, extra_attrs=None, **kwargs):
         """Reimplements forms.Widget.build_attrs"""
         extra_attrs = copy(extra_attrs)
@@ -33,16 +32,15 @@ class ClassAttrAwareHiddenInput(ClassAttrAwareWidgetMixin, forms.HiddenInput):
 
 
 class HorizontalRadioRenderer(forms.RadioSelect.renderer):
-
     def render(self):
         return mark_safe('\n'.join(['%s\n' % w for w in self]))
 
 
 class NewlinePreservingTextarea(forms.widgets.Textarea):
-
     def render(self, name, value, attrs=None):
         if value is None:
             value = ''
         final_attrs = self.build_attrs(attrs, name=name)
-        return mark_safe('<textarea%s>\r\n%s</textarea>' % (flatatt(final_attrs),
-                conditional_escape(force_str(value))))
+        return mark_safe(
+            '<textarea%s>\r\n%s</textarea>' % (flatatt(final_attrs), conditional_escape(force_str(value)))
+        )

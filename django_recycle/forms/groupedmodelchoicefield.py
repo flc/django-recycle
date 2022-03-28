@@ -7,12 +7,11 @@ from django.forms.models import (
     ModelChoiceIterator,
     ModelChoiceField,
     ModelMultipleChoiceField,
-    )
+)
 from django.db.models import ForeignKey
 
 
 class GroupedModelChoiceIterator(ModelChoiceIterator):
-
     def __iter__(self):
         if self.field.empty_label is not None:
             yield ("", self.field.empty_label)
@@ -25,23 +24,21 @@ class GroupedModelChoiceIterator(ModelChoiceIterator):
             if choice_cache is None:
                 choice_cache = [
                     (self.field.get_group_label(group), [self.choice(ch) for ch in choices])
-                        for group, choices in groupby(query,
-                            key=lambda row: getattr(row, group_by_field))
+                    for group, choices in groupby(query, key=lambda row: getattr(row, group_by_field))
                 ]
             yield from choice_cache
         else:
             for group, choices in groupby(
-                                query,
-                                key=lambda row: getattr(row, group_by_field),
-                                ):
+                query,
+                key=lambda row: getattr(row, group_by_field),
+            ):
                 yield (
                     self.field.get_group_label(group),
                     [self.choice(ch) for ch in choices],
-                    )
+                )
 
 
 class GroupedModelChoiceFieldMixin:
-
     def __init__(self, group_by_field, group_label=None, *args, **kwargs):
         """
         group_by_field is the name of a field on the model
@@ -74,17 +71,16 @@ class GroupedModelChoiceFieldMixin:
         if hasattr(self, '_choices'):
             return self._choices
         return GroupedModelChoiceIterator(self)
+
     choices = property(_get_choices, ModelChoiceField._set_choices)
 
     def get_group_label(self, group):
         return self.group_label(group)
 
 
-class GroupedModelChoiceField(GroupedModelChoiceFieldMixin,
-                              ModelChoiceField):
+class GroupedModelChoiceField(GroupedModelChoiceFieldMixin, ModelChoiceField):
     pass
 
 
-class GroupedModelMultipleChoiceField(GroupedModelChoiceFieldMixin,
-                                      ModelMultipleChoiceField):
+class GroupedModelMultipleChoiceField(GroupedModelChoiceFieldMixin, ModelMultipleChoiceField):
     pass
