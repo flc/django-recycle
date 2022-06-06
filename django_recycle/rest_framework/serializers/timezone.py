@@ -12,11 +12,18 @@ class TimeZoneSerializerField(serializers.ChoiceField):
     }
 
     def __init__(self, **kwargs):
-        choices = TimeZoneField.default_choices
-        try:
-            choices = [c[1] for c in choices]
-        except IndexError:
-            pass
+        # default_choices removed in django-timezone-field==5.0
+        if hasattr(TimeZoneField, 'default_choices'):
+            choices = TimeZoneField.default_choices
+            try:
+                choices = [c[1] for c in choices]
+            except IndexError:
+                pass
+        else:
+            # django-timezone-field==5.0
+            pytz_tzs = TimeZoneField.default_pytz_tzs
+            choices = [tz.zone for tz in pytz_tzs]
+
         super().__init__(choices, **kwargs)
 
     def to_internal_value(self, data):
