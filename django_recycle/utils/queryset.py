@@ -31,6 +31,9 @@ def large_vlqs_pk_iterator(queryset, size=50000):
     """Use for iterating over large ValuesListQuerySet's.
     Note that the implementation of the iterator does not support
     ordered query sets."""
+    if not hasattr(queryset, 'flat'):
+        return queryset.iterator(chunk_size=size)
+
     pk_inserted = False
     original_flat = queryset.flat
     if queryset.field_names[0] not in ("id", "pk"):
