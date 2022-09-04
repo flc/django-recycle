@@ -33,35 +33,35 @@ def large_vlqs_pk_iterator(queryset, size=50000):
     ordered query sets."""
     if not hasattr(queryset, 'flat'):
         yield from queryset.iterator(chunk_size=size)
+    else:
+        pk_inserted = False
+        original_flat = queryset.flat
+        if queryset.field_names[0] not in ("id", "pk"):
+            values = queryset.field_names[:]
+            values.insert(0, "pk")
+            queryset = queryset.values_list(*values)
+            pk_inserted = True
 
-    pk_inserted = False
-    original_flat = queryset.flat
-    if queryset.field_names[0] not in ("id", "pk"):
-        values = queryset.field_names[:]
-        values.insert(0, "pk")
-        queryset = queryset.values_list(*values)
-        pk_inserted = True
-
-    queryset = queryset.order_by("pk")
-    pk = 0
-    while True:
-        yielded = False
-        for row in queryset.filter(pk__gt=pk)[:size].iterator():
-            yielded = True
-            if pk_inserted:
-                if original_flat:
-                    yield row[-1]
+        queryset = queryset.order_by("pk")
+        pk = 0
+        while True:
+            yielded = False
+            for row in queryset.filter(pk__gt=pk)[:size].iterator():
+                yielded = True
+                if pk_inserted:
+                    if original_flat:
+                        yield row[-1]
+                    else:
+                        yield row[1:]
                 else:
-                    yield row[1:]
-            else:
-                yield row
-        if not yielded:
-            break
-        if isinstance(row, tuple):
-            pk = row[0]
-        else:  # flat=True case
-            pk = row
-        gc.collect()
+                    yield row
+            if not yielded:
+                break
+            if isinstance(row, tuple):
+                pk = row[0]
+            else:  # flat=True case
+                pk = row
+            gc.collect()
 
 
 def large_qs_iterator(queryset, size=50000):
