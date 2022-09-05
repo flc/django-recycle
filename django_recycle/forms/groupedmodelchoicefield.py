@@ -18,24 +18,15 @@ class GroupedModelChoiceIterator(ModelChoiceIterator):
 
         group_by_field = self.field.group_by_field
         query = self.field._get_query()
-        choice_cache = self.field.choice_cache
 
-        if self.field.cache_choices:
-            if choice_cache is None:
-                choice_cache = [
-                    (self.field.get_group_label(group), [self.choice(ch) for ch in choices])
-                    for group, choices in groupby(query, key=lambda row: getattr(row, group_by_field))
-                ]
-            yield from choice_cache
-        else:
-            for group, choices in groupby(
-                query,
-                key=lambda row: getattr(row, group_by_field),
-            ):
-                yield (
-                    self.field.get_group_label(group),
-                    [self.choice(ch) for ch in choices],
-                )
+        for group, choices in groupby(
+            query,
+            key=lambda row: getattr(row, group_by_field),
+        ):
+            yield (
+                self.field.get_group_label(group),
+                [self.choice(ch) for ch in choices],
+            )
 
 
 class GroupedModelChoiceFieldMixin:
@@ -56,7 +47,7 @@ class GroupedModelChoiceFieldMixin:
         if not self.queryset.query.order_by:
             query = self.queryset.order_by(group_by_field)
         else:
-            new_order_by = [group_by_field] + self.queryset.query.order_by
+            new_order_by = [group_by_field] + list(self.queryset.query.order_by)
             query = self.queryset.order_by(*new_order_by)
 
         if isinstance(query.model._meta.get_field(group_by_field), ForeignKey):

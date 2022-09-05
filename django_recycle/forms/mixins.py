@@ -152,3 +152,11 @@ class RequiredMinMaxFormMixin(MinMaxFormMixin):
                     del cleaned_data[max_name]
 
         return cleaned_data
+
+
+class LabelSuffixMixin:
+    label_suffix = ''
+
+    def __init__(self, *args, **kwargs):
+        kwargs.setdefault('label_suffix', self.label_suffix)
+        super().__init__(*args, **kwargs)

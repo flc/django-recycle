@@ -5,14 +5,12 @@ from django.core.exceptions import FieldDoesNotExist
 
 
 class TransformQuerySet(models.query.QuerySet):
-    # borrowed from https://github.com/simonw/django-queryset-transform/blob/master/queryset_transform/__init__.py
-
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self._transform_fns = []
 
-    def _clone(self, klass=None, setup=False, **kw):
-        c = super()._clone(klass, setup, **kw)
+    def _clone(self, *args, **kwargs):
+        c = super()._clone(*args, **kwargs)
         c._transform_fns = self._transform_fns[:]
         return c
 
@@ -21,18 +19,19 @@ class TransformQuerySet(models.query.QuerySet):
         c._transform_fns.append(fn)
         return c
 
-    def iterator(self):
-        result_iter = super().iterator()
+    def _iterator(self, *args, **kwargs):
+        result_iter = super()._iterator(*args, **kwargs)
         if self._transform_fns:
             results = list(result_iter)
             for fn in self._transform_fns:
                 fn(results)
-            return iter(results)
+            # return iter(results)
+            return results
         return result_iter
 
 
 class TransformManager(models.Manager):
-    def get_query_set(self):
+    def get_queryset(self):
         return TransformQuerySet(self.model)
 
 
