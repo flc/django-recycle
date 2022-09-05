@@ -36,7 +36,7 @@ class TransformManager(models.Manager):
         return TransformQuerySet(self.model)
 
 
-def lookup_foreignkey(items, fields):
+def lookup_foreignkey(items, fields, chunk_size=1000000):
     """Usage:
     from functools import partial
     queryset = queryset._clone(TransformQuerySet).transform(
@@ -68,9 +68,12 @@ def lookup_foreignkey(items, fields):
         for item in items:
             dd[getattr(item, column)].append(item)
 
-        query_model = field.rel.to
+        if hasattr(field, 'rel'):
+            query_model = field.rel.to
+        else:
+            query_model = field.remote_field.model
         objs = []
-        for obj in query_model.objects.filter(id__in=list(dd.keys())).iterator():
+        for obj in query_model.objects.filter(id__in=dd.keys()).iterator(chunk_size=chunk_size):
             for item in dd[obj.id]:
                 setattr(item, field_name, obj)
                 objs.append(obj)
