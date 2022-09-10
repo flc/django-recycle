@@ -3,7 +3,7 @@ from django.forms.boundfield import BoundField
 from django.utils.translation import gettext as _
 from django.utils.translation import gettext
 
-from core.utils.looping import grouper
+from recycle.looping import grouper
 
 
 class FormFieldWithFormMixin:
