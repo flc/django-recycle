@@ -21,7 +21,7 @@ def large_qs_pk_iterator(queryset, size=10000, use_iterator_method=False):
         qs = qs[:size]
         if use_iterator_method:
             qs = qs.iterator()
-        idx = None
+        idx = 0
         for idx, row in enumerate(qs, 1):
             # keep this before yield because the row (if it is a model object)
             # may gets deleted
@@ -68,7 +68,7 @@ def large_qs_iterator(queryset, size=50000, use_iterator_method=False):
     large_qs_pk_iterator."""
     offset = 0
     while True:
-        idx = -1
+        idx = 0
         limit = offset + size
         qs = queryset[offset:limit]
         if use_iterator_method:
