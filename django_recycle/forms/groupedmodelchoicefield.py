@@ -63,7 +63,11 @@ class GroupedModelChoiceFieldMixin:
             return self._choices
         return GroupedModelChoiceIterator(self)
 
-    choices = property(_get_choices, ModelChoiceField._set_choices)
+    try:
+        choices = property(_get_choices, ModelChoiceField._set_choices)
+    except AttributeError:
+        # from django 5+
+        choices = property(_get_choices, ModelChoiceField.choices.fset)
 
     def get_group_label(self, group):
         return self.group_label(group)
