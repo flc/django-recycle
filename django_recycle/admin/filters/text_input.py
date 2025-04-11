@@ -29,7 +29,10 @@ class SingleTextInputFilter(ListFilter):
         query string for this filter, if any. If the value wasn't provided then
         returns None.
         """
-        return self.used_parameters.get(self.parameter_name, None)
+        val = self.used_parameters.get(self.parameter_name)
+        if isinstance(val, list):
+            val = val[0]
+        return val
 
     def has_output(self):
         return True
