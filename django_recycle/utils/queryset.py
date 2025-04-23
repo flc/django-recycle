@@ -79,3 +79,15 @@ def large_qs_iterator(queryset, size=50000, use_iterator_method=False):
         if idx < size:
             break
         gc.collect()
+
+
+def queryset_chunked_update(qs, update_data: dict, chunk_size: int = 1000, iterator_chunk_size: int | None = None):
+    import more_itertools
+
+    model = qs.model
+    pks = qs.order_by('pk').values_list('pk', flat=True).iterator(chunk_size=iterator_chunk_size)
+    total_updated = 0
+    for pks_chunk in more_itertools.chunked(pks, chunk_size):
+        updated = model._default_manager.filter(pk__in=pks_chunk).update(**update_data)
+        total_updated += updated
+    return total_updated
