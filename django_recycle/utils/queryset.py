@@ -81,7 +81,8 @@ def large_qs_iterator(queryset, size=50000, use_iterator_method=False):
         gc.collect()
 
 
-def queryset_chunked_update(qs, update_data: dict, chunk_size: int = 1000, iterator_chunk_size: int | None = None):
+# def queryset_chunked_update(qs, update_data: dict, chunk_size: int = 1000, iterator_chunk_size: int | None = None):
+def queryset_chunked_update(qs, update_data, chunk_size=1000, iterator_chunk_size=None):
     import more_itertools
 
     model = qs.model
