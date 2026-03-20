@@ -5,6 +5,7 @@ setup(
     name="django-recycle",
     version="0.1",
     packages=find_packages(),
+    include_package_data=True,
     author="flc",
     author_email="",
     description="",
