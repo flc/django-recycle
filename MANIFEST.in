@@ -1,1 +1,1 @@
-global-include *.html
+recursive-include django_recycle *.html
