@@ -20,6 +20,10 @@ class FieldsFilterBackend(filters.BaseFilterBackend):
             if name in params:
                 value = params[name]
 
+                # the database refuses it only when the lazy queryset runs, past the try below
+                if '\x00' in value:
+                    raise drf_exceptions.ValidationError({name: 'Null characters are not allowed.'})
+
                 # special care for boolean fields
                 # and fields that can accept null as a filter value
                 model = queryset.model
